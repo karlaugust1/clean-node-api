@@ -128,5 +128,5 @@ rules:
     [error, { functions: false, classes: false }]
   "@typescript-eslint/ban-types": 'off'
 
-  import/order: ["error", { newlines-between: always }]
+  import/order: 'off'
   import/no-named-as-default: 'off'
