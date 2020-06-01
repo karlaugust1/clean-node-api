@@ -1,10 +1,13 @@
+import { AccountModel } from "../../domain/models/account"
+import { AddAccount, AddAccountModel } from "../../domain/usecases/add-account"
 import { InvalidParamError, MissingParamError, ServerError } from "../errors"
 import { EmailValidator } from "../protocols"
 import { SignUpController } from "./signup"
 
 interface SutTypes {
     sut: SignUpController
-    emailValidator: EmailValidator
+    emailValidatorStub: EmailValidator
+    addAccountStub: AddAccount
 }
 
 const makeEmailValidator = (): EmailValidator => {
@@ -19,14 +22,35 @@ const makeEmailValidator = (): EmailValidator => {
     return new EmailValidatorStub()
 }
 
-const makeSut = (): SutTypes => {
-    const emailValidatorstub = makeEmailValidator()
+const makeAddAccount = (): AddAccount => {
+    class AddAccountStub implements AddAccount {
 
-    const sut = new SignUpController(emailValidatorstub)
+        // eslint-disable-next-line no-unused-vars
+        add(_account: AddAccountModel): AccountModel {
+            const fakeAccount = {
+                id: "valid_id",
+                name: "valid_name",
+                email: "valid_email",
+                password: "valid_password"
+            }
+
+            return fakeAccount
+        }
+
+    }
+
+    return new AddAccountStub()
+}
+
+const makeSut = (): SutTypes => {
+    const emailValidatorStub = makeEmailValidator()
+    const addAccountStub = makeAddAccount()
+    const sut = new SignUpController(emailValidatorStub, addAccountStub)
 
     return {
         sut,
-        emailValidator: emailValidatorstub
+        emailValidatorStub,
+        addAccountStub
     }
 }
 
@@ -109,7 +133,7 @@ describe("SignUp Controller", () => {
 
     test("Should return 400 if an invalid email is provided", () => {
         // SUT == System Under Test => Class that we are testing
-        const { sut, emailValidator } = makeSut()
+        const { sut, emailValidatorStub: emailValidator } = makeSut()
         jest.spyOn(emailValidator, "isValid").mockReturnValueOnce(false)
         const httpRequest = {
             body: {
@@ -126,7 +150,7 @@ describe("SignUp Controller", () => {
 
     test("Should call EmailValidator with correct email", () => {
         // SUT == System Under Test => Class that we are testing
-        const { sut, emailValidator } = makeSut()
+        const { sut, emailValidatorStub: emailValidator } = makeSut()
         const isValidSpy = jest.spyOn(emailValidator, "isValid")
         const httpRequest = {
             body: {
@@ -141,7 +165,7 @@ describe("SignUp Controller", () => {
     })
 
     test("Should return 500 if EmailValidator throws", () => {
-        const { sut, emailValidator } = makeSut()
+        const { sut, emailValidatorStub: emailValidator } = makeSut()
         jest.spyOn(emailValidator, "isValid").mockImplementationOnce(() => {
             throw new Error()
         })
@@ -156,5 +180,25 @@ describe("SignUp Controller", () => {
         const httpResponse = sut.handle(httpRequest)
         expect(httpResponse.statusCode).toBe(500)
         expect(httpResponse.body).toEqual(new ServerError())
+    })
+
+    test("Should call AddAccount with correct values", () => {
+        // SUT == System Under Test => Class that we are testing
+        const { sut, addAccountStub: addAccount } = makeSut()
+        const addSpy = jest.spyOn(addAccount, "add")
+        const httpRequest = {
+            body: {
+                name: "any_name",
+                email: "any_email@mail.com",
+                password: "any_password",
+                passwordConfirmation: "any_password"
+            }
+        }
+        sut.handle(httpRequest)
+        expect(addSpy).toHaveBeenCalledWith({
+            name: "any_name",
+            email: "any_email@mail.com",
+            password: "any_password"
+        })
     })
 })
