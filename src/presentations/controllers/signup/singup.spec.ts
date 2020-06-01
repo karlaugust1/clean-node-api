@@ -84,7 +84,7 @@ describe("SignUp Controller", () => {
         expect(httpResponse.body).toEqual(new MissingParamError("email"))
     })
 
-    test("Should return 400 if no password is provided", async  () => {
+    test("Should return 400 if no password is provided", async () => {
         // SUT == System Under Test => Class that we are testing
         const { sut } = makeSut()
         const httpRequest = {
@@ -114,7 +114,7 @@ describe("SignUp Controller", () => {
         expect(httpResponse.body).toEqual(new MissingParamError("passwordConfirmation"))
     })
 
-    test("Should return 400 if no password confirmation fails",async () => {
+    test("Should return 400 if no password confirmation fails", async () => {
         // SUT == System Under Test => Class that we are testing
         const { sut } = makeSut()
         const httpRequest = {
@@ -163,7 +163,7 @@ describe("SignUp Controller", () => {
         expect(isValidSpy).toHaveBeenCalledWith(httpRequest.body.email)
     })
 
-    test("Should return 500 if EmailValidator throws",async  () => {
+    test("Should return 500 if EmailValidator throws", async () => {
         const { sut, emailValidatorStub } = makeSut()
         jest.spyOn(emailValidatorStub, "isValid").mockImplementationOnce(() => {
             throw new Error()
