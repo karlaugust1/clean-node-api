@@ -132,8 +132,8 @@ describe("SignUp Controller", () => {
 
     test("Should return 400 if an invalid email is provided", () => {
         // SUT == System Under Test => Class that we are testing
-        const { sut, emailValidatorStub: emailValidator } = makeSut()
-        jest.spyOn(emailValidator, "isValid").mockReturnValueOnce(false)
+        const { sut, emailValidatorStub } = makeSut()
+        jest.spyOn(emailValidatorStub, "isValid").mockReturnValueOnce(false)
         const httpRequest = {
             body: {
                 name: "any_name",
@@ -149,8 +149,8 @@ describe("SignUp Controller", () => {
 
     test("Should call EmailValidator with correct email", () => {
         // SUT == System Under Test => Class that we are testing
-        const { sut, emailValidatorStub: emailValidator } = makeSut()
-        const isValidSpy = jest.spyOn(emailValidator, "isValid")
+        const { sut, emailValidatorStub } = makeSut()
+        const isValidSpy = jest.spyOn(emailValidatorStub, "isValid")
         const httpRequest = {
             body: {
                 name: "any_name",
@@ -164,8 +164,8 @@ describe("SignUp Controller", () => {
     })
 
     test("Should return 500 if EmailValidator throws", () => {
-        const { sut, emailValidatorStub: emailValidator } = makeSut()
-        jest.spyOn(emailValidator, "isValid").mockImplementationOnce(() => {
+        const { sut, emailValidatorStub } = makeSut()
+        jest.spyOn(emailValidatorStub, "isValid").mockImplementationOnce(() => {
             throw new Error()
         })
         const httpRequest = {
@@ -199,5 +199,23 @@ describe("SignUp Controller", () => {
             email: "any_email@mail.com",
             password: "any_password"
         })
+    })
+
+    test("Should return 500 if AddAccount throws", () => {
+        const { sut, addAccountStub } = makeSut()
+        jest.spyOn(addAccountStub, "add").mockImplementationOnce(() => {
+            throw new Error()
+        })
+        const httpRequest = {
+            body: {
+                name: "any_name",
+                email: "any_email@mail.com",
+                password: "any_password",
+                passwordConfirmation: "any_password"
+            }
+        }
+        const httpResponse = sut.handle(httpRequest)
+        expect(httpResponse.statusCode).toBe(500)
+        expect(httpResponse.body).toEqual(new ServerError())
     })
 })
