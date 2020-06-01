@@ -89,7 +89,7 @@ rules:
   operator-linebreak: [error, before]
   no-unneeded-ternary: error
   no-useless-computed-key: error
-  semi: [error, never]
+  semi: 'off'
   padded-blocks: [error, { blocks: never, classes: always, switches: never }]
   padding-line-between-statements:
     [error, { blankLine: always, prev: "*", next: return }]
