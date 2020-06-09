@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { MongoClient, Collection } from "mongodb"
 
@@ -16,7 +18,13 @@ export const MongoHelper = {
     },
 
     getCollection(name: string): Collection {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         return this.client.db().collection(name)
+    },
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    map(collection: any): any {
+        const { _id, ...collectionWithoutId } = collection
+
+        return Object.assign(collectionWithoutId, { id: _id })
     }
 }
