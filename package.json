@@ -29,11 +29,11 @@
     "eslint-plugin-import": "^2.20.1",
     "git-commit-msg-linter": "^2.4.2",
     "husky": "^4.2.5",
-    "jest": "^26.0.1",
+    "jest": "^26.1.0",
     "lint-staged": "^10.2.6",
     "sucrase": "^3.15.0",
     "supertest": "^4.0.2",
-    "ts-jest": "^26.0.0",
+    "ts-jest": "^26.1.2",
     "typescript": "^3.9.3"
   },
   "jest": {
