@@ -36,6 +36,7 @@ const makeFakeDbAccountData = (): AddAccountModel => ({
 const makeAddAccountRepository = (): AddAccountRepository => {
     class AddAccountRepositoryStub implements AddAccountRepository {
 
+        // eslint-disable-next-line no-unused-vars
         async add(_accountData: AddAccountModel): Promise<AccountModel> {
             return new Promise(resolve => resolve(makeFakeAccount()))
         }

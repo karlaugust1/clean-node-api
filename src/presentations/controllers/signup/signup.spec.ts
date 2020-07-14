@@ -1,19 +1,23 @@
+/* eslint-disable no-unused-vars */
 import { AccountModel } from "../../../domain/models/account"
 import { InvalidParamError, MissingParamError, ServerError } from "../../errors"
 import { SignUpController } from "./signup"
 import { AddAccount, AddAccountModel, EmailValidator } from "./signup-protocols"
 import { ok, badRequest, serverError } from "../../helpers/http-helper"
 import { HttpRequest } from "../../protocols"
+import { Validation } from "../../helpers/validators/validation"
 
 interface SutTypes {
     sut: SignUpController
     emailValidatorStub: EmailValidator
     addAccountStub: AddAccount
+    validationStub: Validation
 }
 
 const makeEmailValidator = (): EmailValidator => {
     class EmailValidatorStub implements EmailValidator {
 
+        // eslint-disable-next-line no-unused-vars
         isValid(_email: string): boolean {
             return true
         }
@@ -52,15 +56,30 @@ const makeAddAccount = (): AddAccount => {
     return new AddAccountStub()
 }
 
+const makeValidation = (): Validation => {
+    class ValidationStub implements Validation {
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        validade(_input: any): Error {
+            return null
+        }
+
+    }
+
+    return new ValidationStub()
+}
+
 const makeSut = (): SutTypes => {
     const emailValidatorStub = makeEmailValidator()
     const addAccountStub = makeAddAccount()
-    const sut = new SignUpController(emailValidatorStub, addAccountStub)
+    const validationStub = makeValidation()
+    const sut = new SignUpController(emailValidatorStub, addAccountStub, validationStub)
 
     return {
         sut,
         emailValidatorStub,
-        addAccountStub
+        addAccountStub,
+        validationStub
     }
 }
 
@@ -189,5 +208,14 @@ describe("SignUp Controller", () => {
         const { sut } = makeSut()
         const httpResponse = await sut.handle(makeHttpRequest())
         expect(httpResponse).toEqual(ok(makeFakeAccount()))
+    })
+
+    test("Should call Validation with correct value", async () => {
+        // SUT == System Under Test => Class that we are testing
+        const { sut, validationStub } = makeSut()
+        const validateSpy = jest.spyOn(validationStub, "validade")
+        const httpRequest = makeHttpRequest()
+        await sut.handle(httpRequest)
+        expect(validateSpy).toHaveBeenCalledWith(httpRequest.body)
     })
 })

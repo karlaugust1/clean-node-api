@@ -12,6 +12,7 @@ interface SutTypes {
 const makeEmailValidator = (): EmailValidator => {
     class EmailValidatorStub implements EmailValidator {
 
+        // eslint-disable-next-line no-unused-vars
         isValid(_email: string): boolean {
             return true
         }
@@ -24,6 +25,7 @@ const makeEmailValidator = (): EmailValidator => {
 const makeAuthentication = (): Authentication => {
     class AuthenticationStub implements Authentication {
 
+        // eslint-disable-next-line no-unused-vars
         async auth(_email: string, _password: string): Promise<string> {
             return Promise.resolve("any_token")
         }

@@ -36,6 +36,7 @@ const makeFakeError = (): HttpResponse => {
 const makeController = (): Controller => {
     class ControllerStub implements Controller {
 
+        // eslint-disable-next-line no-unused-vars
         async handle(_httpRequest: HttpRequest): Promise<HttpResponse> {
             return new Promise(resolve => resolve(ok(makeFakeAccount())))
         }
@@ -49,6 +50,7 @@ const makeController = (): Controller => {
 const makeLogErrorRepositoryStub = (): LogErrorRepository => {
     class LogErrorRepositoryStub implements LogErrorRepository {
 
+        // eslint-disable-next-line no-unused-vars
         async logError(_stack: string): Promise<void> {
             return new Promise(resolve => resolve())
         }
