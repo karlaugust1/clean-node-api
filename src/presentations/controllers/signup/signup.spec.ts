@@ -1,30 +1,16 @@
 /* eslint-disable no-unused-vars */
 import { AccountModel } from "../../../domain/models/account"
-import { InvalidParamError, MissingParamError, ServerError } from "../../errors"
+import { MissingParamError, ServerError } from "../../errors"
 import { SignUpController } from "./signup"
-import { AddAccount, AddAccountModel, EmailValidator } from "./signup-protocols"
+import { AddAccount, AddAccountModel } from "./signup-protocols"
 import { ok, badRequest, serverError } from "../../helpers/http-helper"
 import { HttpRequest } from "../../protocols"
 import { Validation } from "../../helpers/validators/validation"
 
 interface SutTypes {
     sut: SignUpController
-    emailValidatorStub: EmailValidator
     addAccountStub: AddAccount
     validationStub: Validation
-}
-
-const makeEmailValidator = (): EmailValidator => {
-    class EmailValidatorStub implements EmailValidator {
-
-        // eslint-disable-next-line no-unused-vars
-        isValid(_email: string): boolean {
-            return true
-        }
-
-    }
-
-    return new EmailValidatorStub()
 }
 
 const makeFakeAccount = (): AccountModel => ({
@@ -70,61 +56,18 @@ const makeValidation = (): Validation => {
 }
 
 const makeSut = (): SutTypes => {
-    const emailValidatorStub = makeEmailValidator()
     const addAccountStub = makeAddAccount()
     const validationStub = makeValidation()
-    const sut = new SignUpController(emailValidatorStub, addAccountStub, validationStub)
+    const sut = new SignUpController(addAccountStub, validationStub)
 
     return {
         sut,
-        emailValidatorStub,
         addAccountStub,
         validationStub
     }
 }
 
 describe("SignUp Controller", () => {
-    test("Should return 400 if no password confirmation fails", async () => {
-        // SUT == System Under Test => Class that we are testing
-        const { sut } = makeSut()
-        const httpRequest = {
-            body: {
-                name: "any_name",
-                email: "any_email@mail.com",
-                password: "any_password",
-                passwordConfirmation: "invalid_password"
-            }
-        }
-        const httpResponse = await sut.handle(httpRequest)
-        expect(httpResponse).toEqual(badRequest(new InvalidParamError("passwordConfirmation")))
-    })
-
-    test("Should return 400 if an invalid email is provided", async () => {
-        // SUT == System Under Test => Class that we are testing
-        const { sut, emailValidatorStub } = makeSut()
-        jest.spyOn(emailValidatorStub, "isValid").mockReturnValueOnce(false)
-        const httpResponse = await sut.handle(makeHttpRequest())
-        expect(httpResponse).toEqual(badRequest(new InvalidParamError("email")))
-    })
-
-    test("Should call EmailValidator with correct email", async () => {
-        // SUT == System Under Test => Class that we are testing
-        const { sut, emailValidatorStub } = makeSut()
-        const isValidSpy = jest.spyOn(emailValidatorStub, "isValid")
-        const httpRequest = makeHttpRequest()
-        await sut.handle(httpRequest)
-        expect(isValidSpy).toHaveBeenCalledWith(httpRequest.body.email)
-    })
-
-    test("Should return 500 if EmailValidator throws", async () => {
-        const { sut, emailValidatorStub } = makeSut()
-        jest.spyOn(emailValidatorStub, "isValid").mockImplementationOnce(() => {
-            throw new Error()
-        })
-        const httpResponse = await sut.handle(makeHttpRequest())
-        expect(httpResponse).toEqual(serverError(new ServerError(null)))
-    })
-
     test("Should call AddAccount with correct values", async () => {
         // SUT == System Under Test => Class that we are testing
         const { sut, addAccountStub: addAccount } = makeSut()
