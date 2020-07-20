@@ -3,7 +3,7 @@ import { MissingParamError } from "../../errors"
 
 const makeSut = (): RequiredFieldValidation => new RequiredFieldValidation("field")
 
-describe("RequiredFiel Validation", () => {
+describe("RequiredField Validation", () => {
     test("Should return a MissingParamError if validation fails", () => {
         const sut = makeSut()
         const error = sut.validade({ name: "any_name" })
