@@ -3,7 +3,7 @@ import { AccountModel } from "../../../domain/models/account"
 import { MissingParamError, ServerError } from "../../errors"
 import { SignUpController } from "./signup"
 import { AddAccount, AddAccountModel } from "./signup-protocols"
-import { ok, badRequest, serverError } from "../../helpers/http-helper"
+import { ok, badRequest, serverError } from "../../helpers/http/http-helper"
 import { HttpRequest } from "../../protocols"
 import { Validation } from "../../helpers/validators/validation"
 
