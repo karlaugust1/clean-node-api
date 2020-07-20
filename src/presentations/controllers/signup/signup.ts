@@ -13,7 +13,7 @@ export class SignUpController implements Controller {
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
-            const error = this.validation.validade(httpRequest.body)
+            const error = this.validation.validate(httpRequest.body)
             if (error) {
                 return badRequest(error)
             }

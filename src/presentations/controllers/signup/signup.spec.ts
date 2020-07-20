@@ -46,7 +46,7 @@ const makeValidation = (): Validation => {
     class ValidationStub implements Validation {
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        validade(_input: any): Error {
+        validate(_input: any): Error {
             return null
         }
 
@@ -100,7 +100,7 @@ describe("SignUp Controller", () => {
     test("Should call Validation with correct value", async () => {
         // SUT == System Under Test => Class that we are testing
         const { sut, validationStub } = makeSut()
-        const validateSpy = jest.spyOn(validationStub, "validade")
+        const validateSpy = jest.spyOn(validationStub, "validate")
         const httpRequest = makeHttpRequest()
         await sut.handle(httpRequest)
         expect(validateSpy).toHaveBeenCalledWith(httpRequest.body)
@@ -108,7 +108,7 @@ describe("SignUp Controller", () => {
 
     test("Should return 400 if validation returns an error", async () => {
         const { sut, validationStub } = makeSut()
-        jest.spyOn(validationStub, "validade").mockReturnValueOnce(new MissingParamError("any_field"))
+        jest.spyOn(validationStub, "validate").mockReturnValueOnce(new MissingParamError("any_field"))
         const httpResponse = await sut.handle(makeHttpRequest())
         expect(httpResponse).toEqual(badRequest(new MissingParamError("any_field")))
     })

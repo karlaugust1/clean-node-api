@@ -6,7 +6,7 @@ const makeSut = (): CompareFieldsValidation => new CompareFieldsValidation("fiel
 describe("CompareField Validation", () => {
     test("Should return a MissingParamError if validation fails", () => {
         const sut = makeSut()
-        const error = sut.validade({
+        const error = sut.validate({
             field: "any_value",
             fieldToCompare: "wrong_value"
         })
@@ -14,7 +14,7 @@ describe("CompareField Validation", () => {
     })
     test("Should not return a MissingParamError if validation succeeds", () => {
         const sut = makeSut()
-        const error = sut.validade({
+        const error = sut.validate({
             field: "any_value",
             fieldToCompare: "any_value"
         })

@@ -35,14 +35,14 @@ describe("Email Validation", () => {
         // SUT == System Under Test => Class that we are testing
         const { sut, emailValidatorStub } = makeSut()
         jest.spyOn(emailValidatorStub, "isValid").mockReturnValueOnce(false)
-        const error = sut.validade({ email: "any_email@mail.com" })
+        const error = sut.validate({ email: "any_email@mail.com" })
         expect(error).toEqual(new InvalidParamError("email"))
     })
     test("Should call EmailValidator with correct email", () => {
         // SUT == System Under Test => Class that we are testing
         const { sut, emailValidatorStub } = makeSut()
         const isValidSpy = jest.spyOn(emailValidatorStub, "isValid")
-        sut.validade({ email: "any_email@mail.com" })
+        sut.validate({ email: "any_email@mail.com" })
         expect(isValidSpy).toHaveBeenCalledWith("any_email@mail.com")
     })
 
@@ -52,6 +52,6 @@ describe("Email Validation", () => {
             throw new Error()
         })
         // eslint-disable-next-line @typescript-eslint/unbound-method
-        expect(sut.validade).toThrow()
+        expect(sut.validate).toThrow()
     })
 })

@@ -11,7 +11,7 @@ export class RequiredFieldValidation implements Validation {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    validade(input: any): Error {
+    validate(input: any): Error {
         if (!input[this.fieldName]) {
             return new MissingParamError(this.fieldName)
         }

@@ -10,9 +10,9 @@ export class ValidationComposite implements Validation {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    validade(input: any): Error {
+    validate(input: any): Error {
         for (const validation of this.validations) {
-            const error = validation.validade(input)
+            const error = validation.validate(input)
             if (error) {
                 return error
             }

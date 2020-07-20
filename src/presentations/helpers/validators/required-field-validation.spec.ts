@@ -6,12 +6,12 @@ const makeSut = (): RequiredFieldValidation => new RequiredFieldValidation("fiel
 describe("RequiredField Validation", () => {
     test("Should return a MissingParamError if validation fails", () => {
         const sut = makeSut()
-        const error = sut.validade({ name: "any_name" })
+        const error = sut.validate({ name: "any_name" })
         expect(error).toEqual(new MissingParamError("field"))
     })
     test("Should not return a MissingParamError if validation succeeds", () => {
         const sut = makeSut()
-        const error = sut.validade({ field: "any_name" })
+        const error = sut.validate({ field: "any_name" })
         expect(error).toBeFalsy()
     })
 })
