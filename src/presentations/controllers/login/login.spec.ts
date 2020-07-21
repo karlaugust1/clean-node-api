@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { LoginController } from "./login"
 import { badRequest, serverError, unauthorizedError, ok } from "../../helpers/http/http-helper"
 import { MissingParamError } from "../../errors"

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { ValidationComposite } from "./validation-composite"
 import { MissingParamError } from "../../errors"
 import { Validation } from "./validation"
