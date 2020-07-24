@@ -3,7 +3,9 @@ import { AddAccountModel } from "../../../../domain/usecases/add-account";
 import { AccountModel } from "../../../../domain/models/account";
 import { MongoHelper } from "../helpers/mongo-helper";
 import { LoadAccountByEmailRepository } from "../../../../data/protocols/db/load-account-by-email-repository";
-export class AccountMongoRepository implements AddAccountRepository, LoadAccountByEmailRepository {
+import { UpdateAccessTokenRepository } from "../../../../data/protocols/db/update-access-token-repository";
+// eslint-disable-next-line max-len
+export class AccountMongoRepository implements AddAccountRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository {
 
     async add(accountData: AddAccountModel): Promise<AccountModel> {
         const accounCollection = await MongoHelper.getCollection("accounts")
@@ -18,6 +20,15 @@ export class AccountMongoRepository implements AddAccountRepository, LoadAccount
         const account = await accounCollection.findOne({ email })
 
         return account && MongoHelper.map(account) as AccountModel
+    }
+
+    async updateAccessToken(id: string, token: string): Promise<void> {
+        const accounCollection = await MongoHelper.getCollection("accounts")
+        await accounCollection.updateOne({ _id: id }, {
+            $set: {
+                accessToken: token
+            }
+        })
     }
 
 }
