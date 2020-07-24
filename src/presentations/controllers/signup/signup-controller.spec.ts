@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 import { AccountModel } from "../../../domain/models/account"
 import { MissingParamError, ServerError } from "../../errors"
-import { SignUpController } from "./signup"
-import { AddAccount, AddAccountModel } from "./signup-protocols"
+import { SignUpController } from "./signup-controller"
+import { AddAccount, AddAccountModel } from "./signup-controller-protocols"
 import { ok, badRequest, serverError } from "../../helpers/http/http-helper"
 import { HttpRequest } from "../../protocols"
 import { Validation } from "../../helpers/validators/validation"

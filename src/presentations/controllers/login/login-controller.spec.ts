@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
-import { LoginController } from "./login"
+import { LoginController } from "./login-controller"
 import { badRequest, serverError, unauthorizedError, ok } from "../../helpers/http/http-helper"
 import { MissingParamError } from "../../errors"
-import { HttpRequest, Authentication, AuthenticationModel } from "./login-protocols"
-import { Validation } from "../signup/signup-protocols"
+import { HttpRequest, Authentication, AuthenticationModel } from "./login-controller-protocols"
+import { Validation } from "../signup/signup-controller-protocols"
 
 interface SutTypes {
     sut: LoginController
