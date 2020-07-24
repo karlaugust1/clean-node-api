@@ -3,11 +3,7 @@ import { Validation } from "./validation"
 
 export class ValidationComposite implements Validation {
 
-    private readonly validations: Validation[]
-
-    constructor(validations: Validation[]) {
-        this.validations = validations
-    }
+    constructor(private readonly validations: Validation[]) { }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     validate(input: any): Error {

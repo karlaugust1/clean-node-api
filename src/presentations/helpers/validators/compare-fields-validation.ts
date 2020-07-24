@@ -4,13 +4,10 @@ import { InvalidParamError } from "../../errors"
 
 export class CompareFieldsValidation implements Validation {
 
-    private readonly fieldName: string
-    private readonly fieldToCompare: string
-
-    constructor(fieldName: string, fieldToCompare: string) {
-        this.fieldName = fieldName
-        this.fieldToCompare = fieldToCompare
-    }
+    constructor(
+        private readonly fieldName: string,
+        private readonly fieldToCompare: string
+    ) { }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     validate(input: any): Error {

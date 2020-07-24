@@ -3,13 +3,10 @@ import { AddAccount, Controller, HttpRequest, HttpResponse } from "./signup-cont
 import { Validation } from "../../helpers/validators/validation"
 export class SignUpController implements Controller {
 
-    private readonly addAccount: AddAccount
-    private readonly validation: Validation
-
-    constructor(addAccount: AddAccount, validation: Validation) {
-        this.addAccount = addAccount
-        this.validation = validation
-    }
+    constructor(
+        private readonly addAccount: AddAccount,
+        private readonly validation: Validation
+    ) { }
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {

@@ -5,13 +5,10 @@ import { EmailValidator } from "../../protocols/email-validator"
 
 export class EmailValidation implements Validation {
 
-    private readonly emailValidator: EmailValidator
-    private readonly fieldName: string
-
-    constructor(fieldName: string, emailValidator: EmailValidator) {
-        this.fieldName = fieldName
-        this.emailValidator = emailValidator
-    }
+    constructor(
+        private readonly fieldName: string,
+        private readonly emailValidator: EmailValidator
+    ) { }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     validate(input: any): Error {
