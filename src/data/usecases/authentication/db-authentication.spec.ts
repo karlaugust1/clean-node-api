@@ -4,7 +4,7 @@ import {
     HashComparer, Encrypter, UpdateAccessTokenRepository
 } from "./db-authentication-protocols"
 
-const makeFaceAccount = (): AccountModel => ({
+const makeFakeAccount = (): AccountModel => ({
     id: "any_id",
     name: "any_name",
     email: "any_mail@mail.com",
@@ -18,7 +18,7 @@ const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
 
         // eslint-disable-next-line no-unused-vars
         async loadByEmail(_email: string): Promise<AccountModel> {
-            const account: AccountModel = makeFaceAccount()
+            const account: AccountModel = makeFakeAccount()
 
             return Promise.resolve(account)
         }
