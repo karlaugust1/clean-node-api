@@ -16,15 +16,16 @@ export class SignUpController implements Controller {
                 return badRequest(error)
             }
             const { name, email, password } = httpRequest.body
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const account = await this.addAccount.add({
                 name,
                 email,
                 password
             })
 
-            await this.authentication.auth({ email, password })
+            const accessToken = await this.authentication.auth({ email, password })
 
-            return ok(account)
+            return ok({ accessToken })
         } catch (error) {
             return serverError(error)
         }
