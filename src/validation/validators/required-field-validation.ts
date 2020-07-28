@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { Validation } from "./validation"
-import { MissingParamError } from "../../errors"
+import { Validation } from "../../presentations/protocols"
+import { MissingParamError } from "../../presentations/errors"
 
 export class RequiredFieldValidation implements Validation {
 

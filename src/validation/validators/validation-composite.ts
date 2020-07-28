@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { Validation } from "./validation"
+import { Validation } from "../../presentations/protocols"
 
 export class ValidationComposite implements Validation {
 

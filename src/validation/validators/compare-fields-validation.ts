@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { Validation } from "./validation"
-import { InvalidParamError } from "../../errors"
+import { Validation } from "../../presentations/protocols"
+import { InvalidParamError } from "../../presentations/errors"
 
 export class CompareFieldsValidation implements Validation {
 

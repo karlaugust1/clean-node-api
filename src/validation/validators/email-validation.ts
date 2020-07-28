@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { Validation } from "./validation"
-import { InvalidParamError } from "../../errors"
-import { EmailValidator } from "../../protocols/email-validator"
+import { Validation } from "../../presentations/protocols"
+import { InvalidParamError } from "../../presentations/errors"
+import { EmailValidator } from "../protocols/email-validator"
 
 export class EmailValidation implements Validation {
 

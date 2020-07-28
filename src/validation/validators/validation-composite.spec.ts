@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { ValidationComposite } from "./validation-composite"
-import { MissingParamError } from "../../errors"
-import { Validation } from "./validation"
+import { MissingParamError } from "../../presentations/errors"
+import { Validation } from "../../presentations/protocols"
 
 interface SutTypes {
     sut: ValidationComposite
