@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
 import { AccountModel } from "../../../domain/models/account"
-import { MissingParamError, ServerError } from "../../errors"
+import { MissingParamError, ServerError, EmailInUseError } from "../../errors"
 import { SignUpController } from "./signup-controller"
 import { AddAccount, AddAccountModel, Authentication, AuthenticationModel } from "./signup-controller-protocols"
-import { ok, badRequest, serverError } from "../../helpers/http/http-helper"
+import { ok, badRequest, serverError, forbidden } from "../../helpers/http/http-helper"
 import { HttpRequest } from "../../protocols"
 import { Validation } from "../../helpers/validators/validation"
 
@@ -111,6 +111,14 @@ describe("SignUp Controller", () => {
         const { sut } = makeSut()
         const httpResponse = await sut.handle(makeHttpRequest())
         expect(httpResponse).toEqual(ok({ accessToken: "any_token" }))
+    })
+
+    test("Should return 403 if a AddAccount returns null", async () => {
+        // SUT == System Under Test => Class that we are testing
+        const { sut, addAccountStub } = makeSut()
+        jest.spyOn(addAccountStub, "add").mockReturnValueOnce(Promise.resolve(null))
+        const httpResponse = await sut.handle(makeHttpRequest())
+        expect(httpResponse).toEqual(forbidden(new EmailInUseError()))
     })
 
     test("Should call Validation with correct value", async () => {
