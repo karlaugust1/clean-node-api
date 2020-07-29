@@ -12,19 +12,38 @@ const makeFakeRequest = (): HttpRequest => ({
     }
 })
 
+const makeValidation = (): Validation => {
+    class ValidationStub implements Validation {
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        validate(_input: any): Error {
+            return null
+        }
+
+    }
+
+    return new ValidationStub()
+}
+
+interface SutTypes {
+    sut: AddSurveyController
+    validationStub: Validation
+}
+
+const makeSut = (): SutTypes => {
+    const validationStub = makeValidation()
+    const sut = new AddSurveyController(validationStub)
+
+    return {
+        sut,
+        validationStub
+    }
+}
+
 describe("AddSurvey Controller", () => {
     test("Shoul call Validation with correct values", async () => {
-        class ValidationStub implements Validation {
-
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            validate(_input: any): Error {
-                return null
-            }
-
-        }
-        const validationStub = new ValidationStub()
+        const { sut, validationStub } = makeSut()
         const validateSpy = jest.spyOn(validationStub, "validate")
-        const sut = new AddSurveyController(validationStub)
         const httpRequest = makeFakeRequest()
         await sut.handle(httpRequest)
         expect(validateSpy).toHaveBeenCalledWith(httpRequest.body)
