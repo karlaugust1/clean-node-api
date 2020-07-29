@@ -1,6 +1,5 @@
-import { Controller, HttpRequest, HttpResponse, Authentication } from "./login-controller-protocols";
-import { badRequest, serverError, unauthorizedError, ok } from "../../helpers/http/http-helper";
-import { Validation } from "../signup/signup-controller-protocols";
+import { Controller, HttpRequest, HttpResponse, Authentication, Validation } from "./login-controller-protocols";
+import { badRequest, serverError, unauthorizedError, ok } from "../../../helpers/http/http-helper";
 
 export class LoginController implements Controller {
 
@@ -16,6 +15,7 @@ export class LoginController implements Controller {
                 return badRequest(error)
             }
             const { email, password } = httpRequest.body
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-call
             const accessToken = await this.authentication.auth({ email, password })
             if (!accessToken) {
                 return unauthorizedError()

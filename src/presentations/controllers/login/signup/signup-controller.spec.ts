@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
-import { AccountModel } from "../../../domain/models/account"
-import { MissingParamError, ServerError, EmailInUseError } from "../../errors"
+import { AccountModel } from "../../../../domain/models/account"
+import { MissingParamError, ServerError, EmailInUseError } from "../../../errors"
 import { SignUpController } from "./signup-controller"
 import { AddAccount, AddAccountModel, Authentication, AuthenticationModel } from "./signup-controller-protocols"
-import { ok, badRequest, serverError, forbidden } from "../../helpers/http/http-helper"
-import { HttpRequest, Validation } from "../../protocols"
+import { ok, badRequest, serverError, forbidden } from "../../../helpers/http/http-helper"
+import { HttpRequest, Validation } from "../../../protocols"
 
 interface SutTypes {
     sut: SignUpController
