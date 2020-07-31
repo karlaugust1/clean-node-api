@@ -20,7 +20,7 @@ const makeFakeRequest = (): HttpRequest => ({
 const makeLoadAccountByToken = (): LoadAccountByToken => {
     class LoadAccountByTokenStub implements LoadAccountByToken {
 
-        async load(_accessToken: string, _role?: string): Promise<AccountModel> {
+        async loadByToken(_accessToken: string, _role?: string): Promise<AccountModel> {
             return Promise.resolve(makeFakeAccount())
         }
 
@@ -54,7 +54,7 @@ describe("Auth Middleware", () => {
     test("Should call LoadAccountByToken with correct accessToken", async () => {
         const role = "any_role"
         const { sut, loadAccountByTokenStub } = makeSut(role)
-        const loadSpy = jest.spyOn(loadAccountByTokenStub, "load")
+        const loadSpy = jest.spyOn(loadAccountByTokenStub, "loadByToken")
 
         await sut.handle(makeFakeRequest())
         expect(loadSpy).toHaveBeenCalledWith("any_token", role)
@@ -62,7 +62,7 @@ describe("Auth Middleware", () => {
 
     test("Should return 403 if LoadAccountByToken returns null", async () => {
         const { sut, loadAccountByTokenStub } = makeSut()
-        jest.spyOn(loadAccountByTokenStub, "load").mockReturnValueOnce(Promise.resolve(null))
+        jest.spyOn(loadAccountByTokenStub, "loadByToken").mockReturnValueOnce(Promise.resolve(null))
         const httpResponse = await sut.handle(makeFakeRequest())
         expect(httpResponse).toEqual(forbidden(new AccessDeniedError()))
     })
@@ -75,7 +75,8 @@ describe("Auth Middleware", () => {
 
     test("Should return 500 if LoadAccountByToken throws", async () => {
         const { sut, loadAccountByTokenStub } = makeSut()
-        jest.spyOn(loadAccountByTokenStub, "load").mockReturnValueOnce(new Promise((_, reject) => reject(new Error())))
+        // eslint-disable-next-line max-len
+        jest.spyOn(loadAccountByTokenStub, "loadByToken").mockReturnValueOnce(new Promise((_, reject) => reject(new Error())))
         const httpResponse = await sut.handle(makeFakeRequest())
         expect(httpResponse).toEqual(serverError(new Error()))
     })
