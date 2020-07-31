@@ -4,8 +4,9 @@ import { AccountModel } from "../../../../domain/models/account";
 import { MongoHelper } from "../helpers/mongo-helper";
 import { LoadAccountByEmailRepository } from "../../../../data/protocols/db/account/load-account-by-email-repository";
 import { UpdateAccessTokenRepository } from "../../../../data/protocols/db/account/update-access-token-repository";
+import { LoadAccountByToken } from "../../../../domain/usecases/load-account-by-token";
 // eslint-disable-next-line max-len
-export class AccountMongoRepository implements AddAccountRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository {
+export class AccountMongoRepository implements AddAccountRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository, LoadAccountByToken {
 
     async add(accountData: AddAccountModel): Promise<AccountModel> {
         const accounCollection = await MongoHelper.getCollection("accounts")
@@ -29,6 +30,13 @@ export class AccountMongoRepository implements AddAccountRepository, LoadAccount
                 accessToken: token
             }
         })
+    }
+
+    async loadByToken(accessToken: string, role?: string): Promise<AccountModel> {
+        const accounCollection = await MongoHelper.getCollection("accounts")
+        const account = await accounCollection.findOne({ accessToken, role })
+
+        return account && MongoHelper.map(account) as AccountModel
     }
 
 }
