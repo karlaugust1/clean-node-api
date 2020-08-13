@@ -1,4 +1,4 @@
-import { SaveSurveyResult, SaveSurveyResultModel } from "../../../domain/usecases/save-survey-result";
+import { SaveSurveyResult, SaveSurveyResultModel } from "../../../../domain/usecases/survey-result/save-survey-result";
 import { SurveyResultModel, SaveSurveyResultRepository } from "./db-save-survey-result-protocols";
 
 export class DbSaveSurveyResult implements SaveSurveyResult {

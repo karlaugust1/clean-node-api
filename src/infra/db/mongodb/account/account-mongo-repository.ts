@@ -1,10 +1,10 @@
 import { AddAccountRepository } from "../../../../data/protocols/db/account/add-account-repository";
-import { AddAccountModel } from "../../../../domain/usecases/add-account";
+import { AddAccountModel } from "../../../../domain/usecases/account/add-account";
 import { AccountModel } from "../../../../domain/models/account";
 import { MongoHelper } from "../helpers/mongo-helper";
 import { LoadAccountByEmailRepository } from "../../../../data/protocols/db/account/load-account-by-email-repository";
 import { UpdateAccessTokenRepository } from "../../../../data/protocols/db/account/update-access-token-repository";
-import { LoadAccountByToken } from "../../../../domain/usecases/load-account-by-token";
+import { LoadAccountByToken } from "../../../../domain/usecases/account/load-account-by-token";
 // eslint-disable-next-line max-len
 export class AccountMongoRepository implements AddAccountRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository, LoadAccountByToken {
 

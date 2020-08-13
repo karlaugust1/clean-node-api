@@ -1,0 +1,6 @@
+export * from "../../../../domain/models/account"
+export * from "../../../protocols/db/account/load-account-by-email-repository"
+export * from "../../../../domain/usecases/account/authentication"
+export * from "../../../protocols/criptograph/hash-comparer"
+export * from "../../../protocols/criptograph/encrypter"
+export * from "../../../protocols/db/account/update-access-token-repository"
