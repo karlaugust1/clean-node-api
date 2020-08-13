@@ -29,9 +29,14 @@ export const MongoHelper = {
     },
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    map(collection: any): any {
-        const { _id, ...collectionWithoutId } = collection
+    map(data: any): any {
+        const { _id, ...collectionWithoutId } = data
 
         return Object.assign(collectionWithoutId, { id: _id })
+    },
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    mapCollection(collection: any[]): any[] {
+        return collection.map(c => MongoHelper.map(c))
     }
 }
