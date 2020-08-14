@@ -1,7 +1,7 @@
 import {
     Controller, HttpRequest, HttpResponse, LoadSurveyById, SaveSurveyResult
 } from "./save-survey-result-controller-protocols";
-import { forbidden, serverError } from "../../../helpers/http/http-helper";
+import { forbidden, serverError, ok } from "../../../helpers/http/http-helper";
 import { InvalidParamError } from "../../../errors";
 
 export class SaveSurveyResultController implements Controller {
@@ -26,14 +26,14 @@ export class SaveSurveyResultController implements Controller {
                 return forbidden(new InvalidParamError("surveyId"))
             }
 
-            await this.saveSurveyResult.save({
+            const surveyResult = await this.saveSurveyResult.save({
                 accountId,
                 surveyId,
                 answer,
                 date: new Date()
             })
 
-            return
+            return ok(surveyResult)
         } catch (error) {
             return serverError(error)
         }
