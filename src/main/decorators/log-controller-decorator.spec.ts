@@ -2,7 +2,8 @@ import { LogControllerDecorator } from "./log-controller-decorator"
 import { Controller, HttpResponse, HttpRequest } from "../../presentations/protocols"
 import { serverError, ok } from "../../presentations/helpers/http/http-helper"
 import { LogErrorRepository } from "../../data/protocols/db/log/log-error-repository"
-import { AccountModel } from "../../domain/models/account"
+import { mockAccountModel } from "../../domain/test"
+import { mockLogErrorRepositoryStub } from "../../data/test"
 
 type SutTypes = {
     sut: LogControllerDecorator
@@ -19,13 +20,6 @@ const makeHttpRequest = (): HttpRequest => ({
     }
 })
 
-const makeFakeAccount = (): AccountModel => ({
-    id: "valid_id",
-    name: "valid_name",
-    email: "valid_email@mail.com",
-    password: "valid_password"
-})
-
 const makeFakeError = (): HttpResponse => {
     const fakeError = new Error()
     fakeError.stack = "any_stack"
@@ -38,7 +32,7 @@ const makeController = (): Controller => {
 
         // eslint-disable-next-line no-unused-vars
         async handle(_httpRequest: HttpRequest): Promise<HttpResponse> {
-            return new Promise(resolve => resolve(ok(makeFakeAccount())))
+            return new Promise(resolve => resolve(ok(mockAccountModel())))
         }
 
     }
@@ -47,22 +41,9 @@ const makeController = (): Controller => {
     return controllerStub
 }
 
-const makeLogErrorRepositoryStub = (): LogErrorRepository => {
-    class LogErrorRepositoryStub implements LogErrorRepository {
-
-        // eslint-disable-next-line no-unused-vars
-        async logError(_stack: string): Promise<void> {
-            return new Promise(resolve => resolve())
-        }
-
-    }
-
-    return new LogErrorRepositoryStub()
-}
-
 const makeSut = (): SutTypes => {
     const controllerStub = makeController()
-    const logErrorRepositoryStub = makeLogErrorRepositoryStub()
+    const logErrorRepositoryStub = mockLogErrorRepositoryStub()
     const sut = new LogControllerDecorator(controllerStub, logErrorRepositoryStub)
 
     return {
@@ -82,7 +63,7 @@ describe("LogController Decorator", () => {
     test("Should return the same result of the controller", async () => {
         const { sut } = makeSut()
         const httpResponse = await sut.handle(makeHttpRequest())
-        expect(httpResponse).toEqual(ok(makeFakeAccount()))
+        expect(httpResponse).toEqual(ok(mockAccountModel()))
     })
 
     test("Should call LogErrorRepository with correct error if controller return a server error", async () => {

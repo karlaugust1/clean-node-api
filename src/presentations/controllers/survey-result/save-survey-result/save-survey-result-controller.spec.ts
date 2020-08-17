@@ -5,6 +5,7 @@ import {
 import { forbidden, serverError, ok } from "../../../helpers/http/http-helper"
 import { InvalidParamError } from "../../../errors"
 import MockDate from "mockdate"
+import { throwError, mockSurveyModel } from "../../../../domain/test/"
 
 const makeFakeRequest = (): HttpRequest => ({
     params: {
@@ -16,17 +17,7 @@ const makeFakeRequest = (): HttpRequest => ({
     accountId: "any_account_id"
 })
 
-const makeFakeSurvey = (): SurveyModel => ({
-    id: "any_id",
-    question: "any_question",
-    answers: [{
-        image: "any_image",
-        answer: "any_answer"
-    }],
-    date: new Date()
-})
-
-const makeFakeSurveyResult = (): SurveyResultModel => ({
+const mockSurveyResult = (): SurveyResultModel => ({
     id: "valid_id",
     surveyId: "valid_survey_id",
     accountId: "valid_account_id",
@@ -38,7 +29,7 @@ const makeLoadSurveyById = (): LoadSurveyById => {
     class LoadSurveyByIdStub implements LoadSurveyById {
 
         async loadById(_id: string): Promise<SurveyModel> {
-            return Promise.resolve(makeFakeSurvey())
+            return Promise.resolve(mockSurveyModel())
         }
 
     }
@@ -51,7 +42,7 @@ const makeSaveSurveyResult = (): SaveSurveyResult => {
 
         // eslint-disable-next-line no-unused-vars
         async save(_data: SaveSurveyResultParams): Promise<SurveyResultModel> {
-            return Promise.resolve(makeFakeSurveyResult())
+            return Promise.resolve(mockSurveyResult())
         }
 
     }
@@ -99,7 +90,7 @@ describe("SaveSurveyResult Controller", () => {
     test("Shoul return 500 if LoadSurveyById throws", async () => {
         const { sut, loadSurveyByIdStub } = makeSut()
         // eslint-disable-next-line max-len
-        jest.spyOn(loadSurveyByIdStub, "loadById").mockReturnValueOnce(new Promise((_resolve, reject) => reject(new Error())))
+        jest.spyOn(loadSurveyByIdStub, "loadById").mockImplementationOnce(() => throwError())
         const httpResponse = await sut.handle({})
         expect(httpResponse).toEqual(serverError(new Error()))
     })
@@ -129,13 +120,13 @@ describe("SaveSurveyResult Controller", () => {
     test("Shoul return 500 if SaveSurveyResult throws", async () => {
         const { sut, saveSurveyResultStub } = makeSut()
         // eslint-disable-next-line max-len
-        jest.spyOn(saveSurveyResultStub, "save").mockReturnValueOnce(new Promise((_resolve, reject) => reject(new Error())))
+        jest.spyOn(saveSurveyResultStub, "save").mockImplementationOnce(() => throwError())
         const httpResponse = await sut.handle({})
         expect(httpResponse).toEqual(serverError(new Error()))
     })
     test("Shoul return 200 on success", async () => {
         const { sut } = makeSut()
         const httpResponse = await sut.handle(makeFakeRequest())
-        expect(httpResponse).toEqual(ok(makeFakeSurveyResult()))
+        expect(httpResponse).toEqual(ok(mockSurveyResult()))
     })
 })

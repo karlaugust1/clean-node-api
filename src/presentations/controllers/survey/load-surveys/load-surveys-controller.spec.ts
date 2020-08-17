@@ -2,8 +2,9 @@ import { SurveyModel, LoadSurveys } from "./load-surveys-controller-protocols"
 import { LoadSurveysController } from "./load-surveys-controller"
 import MockDate from "mockdate"
 import { ok, serverError, noContent } from "../../../helpers/http/http-helper"
+import { throwError } from "../../../../domain/test/"
 
-const makeFakeSurveys = (): SurveyModel[] => [{
+const mockSurveysModel = (): SurveyModel[] => [{
     id: "any_id",
     question: "any_question",
     answers: [{
@@ -25,7 +26,7 @@ const makeLoadSurveysStub = (): LoadSurveys => {
     class LoadSurveysStub implements LoadSurveys {
 
         async load(): Promise<SurveyModel[]> {
-            return Promise.resolve(makeFakeSurveys())
+            return Promise.resolve(mockSurveysModel())
         }
 
     }
@@ -64,7 +65,7 @@ describe("LoadSurveys Controller", () => {
     test("Should return 200 on success", async () => {
         const { sut } = makeSut()
         const httpResponse = await sut.handle({})
-        expect(httpResponse).toEqual(ok(makeFakeSurveys()))
+        expect(httpResponse).toEqual(ok(mockSurveysModel()))
     })
     test("Should return 204 if LoadSurveys returns empty", async () => {
         const { sut, loadSurveysStub } = makeSut()
@@ -75,7 +76,7 @@ describe("LoadSurveys Controller", () => {
     test("Shoul return 500 if AddSurvey throws", async () => {
         const { sut, loadSurveysStub } = makeSut()
         // eslint-disable-next-line max-len
-        jest.spyOn(loadSurveysStub, "load").mockReturnValueOnce(new Promise((_resolve, reject) => reject(new Error())))
+        jest.spyOn(loadSurveysStub, "load").mockImplementationOnce(() => throwError())
         const httpResponse = await sut.handle({})
         expect(httpResponse).toEqual(serverError(new Error()))
     })

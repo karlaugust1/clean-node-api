@@ -3,6 +3,7 @@ import { LoginController } from "./login-controller"
 import { badRequest, serverError, unauthorizedError, ok } from "../../../helpers/http/http-helper"
 import { MissingParamError } from "../../../errors"
 import { HttpRequest, Authentication, AuthenticationParams, Validation } from "./login-controller-protocols"
+import { throwError } from "../../../../domain/test/"
 
 type SutTypes = {
     sut: LoginController
@@ -72,7 +73,7 @@ describe("Login Controller", () => {
 
     test("Should return 500 if Authentication throws", async () => {
         const { sut, authenticationStub } = makeSut()
-        jest.spyOn(authenticationStub, "auth").mockReturnValueOnce(Promise.reject(new Error()))
+        jest.spyOn(authenticationStub, "auth").mockImplementationOnce(() => throwError())
         const httpResponse = await sut.handle(makeHttpRequest())
         expect(httpResponse).toEqual(serverError(new Error()))
     })

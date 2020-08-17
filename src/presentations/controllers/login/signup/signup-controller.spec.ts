@@ -5,6 +5,7 @@ import { SignUpController } from "./signup-controller"
 import { AddAccount, AddAccountParams, Authentication, AuthenticationParams } from "./signup-controller-protocols"
 import { ok, badRequest, serverError, forbidden } from "../../../helpers/http/http-helper"
 import { HttpRequest, Validation } from "../../../protocols"
+import { throwError, mockAccountModel } from "../../../../domain/test/"
 
 type SutTypes = {
     sut: SignUpController
@@ -12,13 +13,6 @@ type SutTypes = {
     validationStub: Validation
     authenticationStub: Authentication
 }
-
-const makeFakeAccount = (): AccountModel => ({
-    id: "valid_id",
-    name: "valid_name",
-    email: "valid_email@mail.com",
-    password: "valid_password"
-})
 
 const makeHttpRequest = (): HttpRequest => ({
     body: {
@@ -34,7 +28,7 @@ const makeAddAccount = (): AddAccount => {
 
         // eslint-disable-next-line no-unused-vars
         async add(_account: AddAccountParams): Promise<AccountModel> {
-            return Promise.resolve(makeFakeAccount())
+            return Promise.resolve(mockAccountModel())
         }
 
     }
@@ -145,7 +139,7 @@ describe("SignUp Controller", () => {
 
     test("Should return 500 if Authentication throws", async () => {
         const { sut, authenticationStub } = makeSut()
-        jest.spyOn(authenticationStub, "auth").mockReturnValueOnce(Promise.reject(new Error()))
+        jest.spyOn(authenticationStub, "auth").mockImplementationOnce(() => throwError())
         const httpResponse = await sut.handle(makeHttpRequest())
         expect(httpResponse).toEqual(serverError(new Error()))
     })
