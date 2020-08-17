@@ -1,6 +1,6 @@
 import { SaveSurveyResultController } from "./save-survey-result-controller"
 import {
-    HttpRequest, SurveyModel, LoadSurveyById, SaveSurveyResult, SaveSurveyResultModel, SurveyResultModel
+    HttpRequest, SurveyModel, LoadSurveyById, SaveSurveyResult, SaveSurveyResultParams, SurveyResultModel
 } from "./save-survey-result-controller-protocols"
 import { forbidden, serverError, ok } from "../../../helpers/http/http-helper"
 import { InvalidParamError } from "../../../errors"
@@ -50,7 +50,7 @@ const makeSaveSurveyResult = (): SaveSurveyResult => {
     class SaveSurveyResultStub implements SaveSurveyResult {
 
         // eslint-disable-next-line no-unused-vars
-        async save(_data: SaveSurveyResultModel): Promise<SurveyResultModel> {
+        async save(_data: SaveSurveyResultParams): Promise<SurveyResultModel> {
             return Promise.resolve(makeFakeSurveyResult())
         }
 

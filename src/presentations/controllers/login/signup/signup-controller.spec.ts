@@ -2,7 +2,7 @@
 import { AccountModel } from "../../../../domain/models/account"
 import { MissingParamError, ServerError, EmailInUseError } from "../../../errors"
 import { SignUpController } from "./signup-controller"
-import { AddAccount, AddAccountModel, Authentication, AuthenticationModel } from "./signup-controller-protocols"
+import { AddAccount, AddAccountParams, Authentication, AuthenticationParams } from "./signup-controller-protocols"
 import { ok, badRequest, serverError, forbidden } from "../../../helpers/http/http-helper"
 import { HttpRequest, Validation } from "../../../protocols"
 
@@ -33,7 +33,7 @@ const makeAddAccount = (): AddAccount => {
     class AddAccountStub implements AddAccount {
 
         // eslint-disable-next-line no-unused-vars
-        async add(_account: AddAccountModel): Promise<AccountModel> {
+        async add(_account: AddAccountParams): Promise<AccountModel> {
             return Promise.resolve(makeFakeAccount())
         }
 
@@ -59,7 +59,7 @@ const makeAuthentication = (): Authentication => {
     class AuthenticationStub implements Authentication {
 
         // eslint-disable-next-line no-unused-vars
-        async auth(_authentication: AuthenticationModel): Promise<string> {
+        async auth(_authentication: AuthenticationParams): Promise<string> {
             return Promise.resolve("any_token")
         }
 

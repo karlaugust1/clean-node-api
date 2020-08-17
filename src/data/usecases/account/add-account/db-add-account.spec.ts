@@ -1,6 +1,6 @@
 import { DbAddAccount } from "./db-add-account"
 import {
-    Hasher, AddAccountRepository, AddAccountModel, AccountModel, LoadAccountByEmailRepository
+    Hasher, AddAccountRepository, AddAccountParams, AccountModel, LoadAccountByEmailRepository
 } from "./db-add-account-protocols"
 
 type SutTypes = {
@@ -30,7 +30,7 @@ const makeFakeAccount = (): AccountModel => ({
     password: "hashed_password"
 })
 
-const makeFakeDbAccountData = (): AddAccountModel => ({
+const makeFakeDbAccountData = (): AddAccountParams => ({
     name: "any_name",
     email: "any_email@mail.com",
     password: "any_password"
@@ -40,7 +40,7 @@ const makeAddAccountRepository = (): AddAccountRepository => {
     class AddAccountRepositoryStub implements AddAccountRepository {
 
         // eslint-disable-next-line no-unused-vars
-        async add(_accountData: AddAccountModel): Promise<AccountModel> {
+        async add(_accountData: AddAccountParams): Promise<AccountModel> {
             return new Promise(resolve => resolve(makeFakeAccount()))
         }
 

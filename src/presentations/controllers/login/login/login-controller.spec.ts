@@ -2,7 +2,7 @@
 import { LoginController } from "./login-controller"
 import { badRequest, serverError, unauthorizedError, ok } from "../../../helpers/http/http-helper"
 import { MissingParamError } from "../../../errors"
-import { HttpRequest, Authentication, AuthenticationModel, Validation } from "./login-controller-protocols"
+import { HttpRequest, Authentication, AuthenticationParams, Validation } from "./login-controller-protocols"
 
 type SutTypes = {
     sut: LoginController
@@ -14,7 +14,7 @@ const makeAuthentication = (): Authentication => {
     class AuthenticationStub implements Authentication {
 
         // eslint-disable-next-line no-unused-vars
-        async auth(_authentication: AuthenticationModel): Promise<string> {
+        async auth(_authentication: AuthenticationParams): Promise<string> {
             return Promise.resolve("any_token")
         }
 

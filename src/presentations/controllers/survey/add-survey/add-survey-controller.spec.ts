@@ -1,4 +1,4 @@
-import { HttpRequest, AddSurvey, AddSurveyModel, Validation } from "./add-survey-controller-protocols";
+import { HttpRequest, AddSurvey, AddSurveyParams, Validation } from "./add-survey-controller-protocols";
 import { AddSurveyController } from "./add-survey-controller"
 import { badRequest, serverError, noContent } from "../../../helpers/http/http-helper";
 import MockDate from "mockdate"
@@ -31,7 +31,7 @@ const makeAddSurvey = (): AddSurvey => {
     class AddSurveyStub implements AddSurvey {
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        async add(_data: AddSurveyModel): Promise<void> {
+        async add(_data: AddSurveyParams): Promise<void> {
             return new Promise(resolve => resolve())
         }
 
