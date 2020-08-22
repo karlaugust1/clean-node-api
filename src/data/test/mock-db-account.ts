@@ -11,7 +11,7 @@ export const mockAddAccountRepository = (): AddAccountRepository => {
 
         // eslint-disable-next-line no-unused-vars
         async add(_accountData: AddAccountParams): Promise<AccountModel> {
-            return new Promise(resolve => resolve(mockAccountModel()))
+            return Promise.resolve(mockAccountModel())
         }
 
     }

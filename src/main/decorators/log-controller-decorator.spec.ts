@@ -32,7 +32,7 @@ const makeController = (): Controller => {
 
         // eslint-disable-next-line no-unused-vars
         async handle(_httpRequest: HttpRequest): Promise<HttpResponse> {
-            return new Promise(resolve => resolve(ok(mockAccountModel())))
+            return Promise.resolve(ok(mockAccountModel()))
         }
 
     }
@@ -70,7 +70,7 @@ describe("LogController Decorator", () => {
         const { sut, controllerStub, logErrorRepositoryStub } = makeSut()
         const logSpy = jest.spyOn(logErrorRepositoryStub, "logError")
         jest.spyOn(controllerStub, "handle").mockReturnValueOnce(
-            new Promise(resolve => resolve(makeFakeError()))
+            Promise.resolve(makeFakeError())
         )
         await sut.handle(makeHttpRequest())
         expect(logSpy).toHaveBeenCalledWith("any_stack")

@@ -9,7 +9,7 @@ export const mockAddSurvey = (): AddSurvey => {
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         async add(_data: AddSurveyParams): Promise<void> {
-            return new Promise(resolve => resolve())
+            return Promise.resolve()
         }
 
     }

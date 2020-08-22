@@ -5,7 +5,7 @@ export const mockLogErrorRepositoryStub = (): LogErrorRepository => {
 
         // eslint-disable-next-line no-unused-vars
         async logError(_stack: string): Promise<void> {
-            return new Promise(resolve => resolve())
+            return Promise.resolve()
         }
 
     }

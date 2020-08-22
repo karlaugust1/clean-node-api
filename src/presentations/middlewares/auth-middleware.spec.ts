@@ -58,7 +58,7 @@ describe("Auth Middleware", () => {
     test("Should return 500 if LoadAccountByToken throws", async () => {
         const { sut, loadAccountByTokenStub } = makeSut()
         // eslint-disable-next-line max-len
-        jest.spyOn(loadAccountByTokenStub, "loadByToken").mockReturnValueOnce(new Promise((_, reject) => reject(new Error())))
+        jest.spyOn(loadAccountByTokenStub, "loadByToken").mockReturnValueOnce(Promise.reject(new Error()))
         const httpResponse = await sut.handle(makeFakeRequest())
         expect(httpResponse).toEqual(serverError(new Error()))
     })
