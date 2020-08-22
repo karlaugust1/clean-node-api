@@ -2,27 +2,15 @@
 import { ValidationComposite } from "./validation-composite"
 import { MissingParamError } from "../../presentations/errors"
 import { Validation } from "../../presentations/protocols"
+import { mockValidation } from "../test"
 
 type SutTypes = {
     sut: ValidationComposite
     validationStubs: Validation[]
 }
 
-const makeValidation = (): Validation => {
-    class ValidationStub implements Validation {
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        validate(_input: any): Error {
-            return null
-        }
-
-    }
-
-    return new ValidationStub()
-}
-
 const makeSut = (): SutTypes => {
-    const validationStubs = [makeValidation(), makeValidation()]
+    const validationStubs = [mockValidation(), mockValidation()]
     const sut = new ValidationComposite(validationStubs)
 
     return {

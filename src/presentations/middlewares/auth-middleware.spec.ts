@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
-import { LoadAccountByToken, HttpRequest, AccountModel } from "./auth-middleware-protocols";
+import { LoadAccountByToken, HttpRequest } from "./auth-middleware-protocols";
 import { forbidden, ok, serverError } from "../helpers/http/http-helper"
 import { AccessDeniedError } from "../errors"
 import { AuthMiddleware } from "./auth-middleware"
-import { mockAccountModel } from "../../domain/test"
+import { mockLoadAccountByToken } from "../test";
 
 const makeFakeRequest = (): HttpRequest => ({
     headers: {
@@ -11,25 +11,13 @@ const makeFakeRequest = (): HttpRequest => ({
     }
 })
 
-const makeLoadAccountByToken = (): LoadAccountByToken => {
-    class LoadAccountByTokenStub implements LoadAccountByToken {
-
-        async loadByToken(_accessToken: string, _role?: string): Promise<AccountModel> {
-            return Promise.resolve(mockAccountModel())
-        }
-
-    }
-
-    return new LoadAccountByTokenStub()
-}
-
 type SutTypes = {
     sut: AuthMiddleware
     loadAccountByTokenStub: LoadAccountByToken
 }
 
 const makeSut = (role?: string): SutTypes => {
-    const loadAccountByTokenStub = makeLoadAccountByToken()
+    const loadAccountByTokenStub = mockLoadAccountByToken()
     const sut = new AuthMiddleware(loadAccountByTokenStub, role)
 
     return {
