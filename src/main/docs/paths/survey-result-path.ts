@@ -5,14 +5,14 @@ export const surveyResultPath = {
         }],
         tags: ["Enquete"],
         summary: "API para criar a resposta de uma enquete",
-        parameters: {
+        parameters: [{
             in: "path",
             name: "surveyId",
             required: true,
             schema: {
                 type: "string"
             }
-        },
+        }],
         requestBody: {
             content: {
                 "application/json": {
