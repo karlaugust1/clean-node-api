@@ -3,10 +3,12 @@
   "version": "2.3.1",
   "description": "",
   "main": "index.js",
-  "licenses": [{
-    "name": "GNU General Public License v3.0 or later",
-    "url": "https://spdx.org/licenses/GPL-3.0-or-later.html"
-  }],
+  "licenses": [
+    {
+      "name": "GNU General Public License v3.0 or later",
+      "url": "https://spdx.org/licenses/GPL-3.0-or-later.html"
+    }
+  ],
   "scripts": {
     "start": "node dist/main/server.js",
     "debug": "nodemon -L --watch ./dist --inspect=0.0.0.0:9222 --nolazy ./dist/main/server.js",
