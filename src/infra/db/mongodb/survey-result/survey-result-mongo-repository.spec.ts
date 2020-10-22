@@ -60,19 +60,17 @@ describe("Survey Mongo Repository", () => {
             const sut = makeSut()
             const survey = await makeSurvey()
             const account = await makeAccount()
-            const saveResult = await sut.save({
+            await sut.save({
                 surveyId: survey.id,
                 accountId: account.id,
                 answer: survey.answers[0].answer,
                 date: new Date()
             })
-            expect(saveResult).toBeTruthy()
-            expect(saveResult.surveyId).toEqual(survey.id)
-            expect(saveResult.answers[0].answer).toBe(survey.answers[0].answer)
-            expect(saveResult.answers[0].count).toBe(1)
-            expect(saveResult.answers[0].percent).toBe(100)
-            expect(saveResult.answers[1].count).toBe(0)
-            expect(saveResult.answers[1].percent).toBe(0)
+            const surveyResult = await surveyResultCollection.findOne({
+                surveyId: survey.id,
+                accountId: account.id
+            })
+            expect(surveyResult).toBeTruthy()
         })
         test("Should update a survey result if it is not new", async () => {
             const sut = makeSut()
@@ -84,19 +82,19 @@ describe("Survey Mongo Repository", () => {
                 answer: survey.answers[0].answer,
                 date: new Date()
             })
-            const saveResult = await sut.save({
+            await sut.save({
                 surveyId: survey.id,
                 accountId: account.id,
                 answer: survey.answers[1].answer,
                 date: new Date()
             })
-            expect(saveResult).toBeTruthy()
-            expect(saveResult.surveyId).toEqual(survey.id)
-            expect(saveResult.answers[0].answer).toBe(survey.answers[1].answer)
-            expect(saveResult.answers[0].count).toBe(1)
-            expect(saveResult.answers[0].percent).toBe(100)
-            expect(saveResult.answers[1].count).toBe(0)
-            expect(saveResult.answers[1].percent).toBe(0)
+            const surveyResult = await surveyResultCollection.find({
+                surveyId: survey.id,
+                accountId: account.id
+            }).toArray()
+
+            expect(surveyResult).toBeTruthy()
+            expect(surveyResult.length).toBe(1)
         })
     })
 
