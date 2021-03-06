@@ -5,7 +5,7 @@ import {
 import { forbidden, serverError, ok } from "../../../helpers/http/http-helper"
 import { InvalidParamError } from "../../../errors"
 import MockDate from "mockdate"
-import { throwError, mockSurveyResult } from "../../../../domain/test/"
+import { throwError, mockSurveyResultModel } from "../../../../domain/test/"
 import { mockSaveSurveyResult, mockLoadSurveyById } from "../../../test"
 
 const mockFakeRequest = (): HttpRequest => ({
@@ -95,6 +95,6 @@ describe("SaveSurveyResult Controller", () => {
     test("Shoul return 200 on success", async () => {
         const { sut } = makeSut()
         const httpResponse = await sut.handle(mockFakeRequest())
-        expect(httpResponse).toEqual(ok(mockSurveyResult()))
+        expect(httpResponse).toEqual(ok(mockSurveyResultModel()))
     })
 })
