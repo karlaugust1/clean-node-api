@@ -1,7 +1,7 @@
 import { Validation } from "../protocols"
 
 export const mockValidation = (): Validation => {
-    class ValidationStub implements Validation {
+    class ValidationSpy implements Validation {
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         validate(_input: any): Error {
@@ -10,5 +10,5 @@ export const mockValidation = (): Validation => {
 
     }
 
-    return new ValidationStub()
+    return new ValidationSpy()
 }

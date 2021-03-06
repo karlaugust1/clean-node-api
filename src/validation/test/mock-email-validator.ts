@@ -1,7 +1,7 @@
 import { EmailValidator } from "../protocols/email-validator"
 
 export const mockEmailValidator = (): EmailValidator => {
-    class EmailValidatorStub implements EmailValidator {
+    class EmailValidatorSpy implements EmailValidator {
 
         // eslint-disable-next-line no-unused-vars
         isValid(_email: string): boolean {
@@ -10,5 +10,5 @@ export const mockEmailValidator = (): EmailValidator => {
 
     }
 
-    return new EmailValidatorStub()
+    return new EmailValidatorSpy()
 }

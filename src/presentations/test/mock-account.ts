@@ -5,7 +5,7 @@ import { Authentication, AuthenticationParams } from "../../domain/usecases/acco
 import { LoadAccountByToken } from "../middlewares/auth-middleware-protocols"
 
 export const mockAddAccount = (): AddAccount => {
-    class AddAccountStub implements AddAccount {
+    class AddAccountSpy implements AddAccount {
 
         // eslint-disable-next-line no-unused-vars
         async add(_account: AddAccountParams): Promise<AccountModel> {
@@ -14,11 +14,11 @@ export const mockAddAccount = (): AddAccount => {
 
     }
 
-    return new AddAccountStub()
+    return new AddAccountSpy()
 }
 
 export const mockAuthentication = (): Authentication => {
-    class AuthenticationStub implements Authentication {
+    class AuthenticationSpy implements Authentication {
 
         // eslint-disable-next-line no-unused-vars
         async auth(_authentication: AuthenticationParams): Promise<string> {
@@ -27,11 +27,11 @@ export const mockAuthentication = (): Authentication => {
 
     }
 
-    return new AuthenticationStub()
+    return new AuthenticationSpy()
 }
 
 export const mockLoadAccountByToken = (): LoadAccountByToken => {
-    class LoadAccountByTokenStub implements LoadAccountByToken {
+    class LoadAccountByTokenSpy implements LoadAccountByToken {
 
         async loadByToken(_accessToken: string, _role?: string): Promise<AccountModel> {
             return Promise.resolve(mockAccountModel())
@@ -39,5 +39,5 @@ export const mockLoadAccountByToken = (): LoadAccountByToken => {
 
     }
 
-    return new LoadAccountByTokenStub()
+    return new LoadAccountByTokenSpy()
 }

@@ -6,7 +6,7 @@ import { mockSurveyModel, mockSurveysModel } from "../../domain/test/mock-survey
 import { LoadSurveysRepository } from "../protocols/db/survey/load-surveys-repository"
 
 export const mockAddSurveyRepository = (): AddSurveyRepository => {
-    class AddSurveyRepositoryStub implements AddSurveyRepository {
+    class AddSurveyRepositorySpy implements AddSurveyRepository {
 
         async add(_surveyData: AddSurveyParams): Promise<void> {
             return Promise.resolve()
@@ -14,11 +14,11 @@ export const mockAddSurveyRepository = (): AddSurveyRepository => {
 
     }
 
-    return new AddSurveyRepositoryStub()
+    return new AddSurveyRepositorySpy()
 }
 
 export const mockLoadSurveyByIdRepository = (): LoadSurveyByIdRepository => {
-    class LoadSurveyByIdRepositoryStub implements LoadSurveyByIdRepository {
+    class LoadSurveyByIdRepositorySpy implements LoadSurveyByIdRepository {
 
         // eslint-disable-next-line no-unused-vars
         async loadById(_id: string): Promise<SurveyModel> {
@@ -27,11 +27,11 @@ export const mockLoadSurveyByIdRepository = (): LoadSurveyByIdRepository => {
 
     }
 
-    return new LoadSurveyByIdRepositoryStub()
+    return new LoadSurveyByIdRepositorySpy()
 }
 
-export const mockLoadSurveysRepositoryStub = (): LoadSurveysRepository => {
-    class LoadSurveysRepositoryStub implements LoadSurveysRepository {
+export const mockLoadSurveysRepositorySpy = (): LoadSurveysRepository => {
+    class LoadSurveysRepositorySpy implements LoadSurveysRepository {
 
         async loadAll(): Promise<SurveyModel[]> {
             return Promise.resolve(mockSurveysModel())
@@ -39,5 +39,5 @@ export const mockLoadSurveysRepositoryStub = (): LoadSurveysRepository => {
 
     }
 
-    return new LoadSurveysRepositoryStub()
+    return new LoadSurveysRepositorySpy()
 }

@@ -5,7 +5,7 @@ import { AddSurvey, AddSurveyParams } from "../../domain/usecases/survey/add-sur
 import { LoadSurveys } from "../../domain/usecases/survey/load-surveys"
 
 export const mockAddSurvey = (): AddSurvey => {
-    class AddSurveyStub implements AddSurvey {
+    class AddSurveySpy implements AddSurvey {
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         async add(_data: AddSurveyParams): Promise<void> {
@@ -14,11 +14,11 @@ export const mockAddSurvey = (): AddSurvey => {
 
     }
 
-    return new AddSurveyStub()
+    return new AddSurveySpy()
 }
 
 export const mockLoadSurveyById = (): LoadSurveyById => {
-    class LoadSurveyByIdStub implements LoadSurveyById {
+    class LoadSurveyByIdSpy implements LoadSurveyById {
 
         async loadById(_id: string): Promise<SurveyModel> {
             return Promise.resolve(mockSurveyModel())
@@ -26,11 +26,11 @@ export const mockLoadSurveyById = (): LoadSurveyById => {
 
     }
 
-    return new LoadSurveyByIdStub()
+    return new LoadSurveyByIdSpy()
 }
 
-export const mockLoadSurveysStub = (): LoadSurveys => {
-    class LoadSurveysStub implements LoadSurveys {
+export const mockLoadSurveysSpy = (): LoadSurveys => {
+    class LoadSurveysSpy implements LoadSurveys {
 
         async load(): Promise<SurveyModel[]> {
             return Promise.resolve(mockSurveysModel())
@@ -38,5 +38,5 @@ export const mockLoadSurveysStub = (): LoadSurveys => {
 
     }
 
-    return new LoadSurveysStub()
+    return new LoadSurveysSpy()
 }

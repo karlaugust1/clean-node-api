@@ -5,7 +5,7 @@ import { mockSurveyResultModel } from "../../domain/test/mock-survey-result"
 import { LoadSurveyResultRepository } from "../protocols/db/survey-result/load-survey-result-repository"
 
 export const mockSaveSurveyResultRepository = (): SaveSurveyResultRepository => {
-    class SaveSurveyResultRepositoryStub implements SaveSurveyResultRepository {
+    class SaveSurveyResultRepositorySpy implements SaveSurveyResultRepository {
 
         async save(_data: SaveSurveyResultParams): Promise<void> {
             return Promise.resolve()
@@ -13,11 +13,11 @@ export const mockSaveSurveyResultRepository = (): SaveSurveyResultRepository => 
 
     }
 
-    return new SaveSurveyResultRepositoryStub()
+    return new SaveSurveyResultRepositorySpy()
 }
 
 export const mockLoadSurveyResultRepository = (): LoadSurveyResultRepository => {
-    class LoadSurveyResultRepositoryStub implements LoadSurveyResultRepository {
+    class LoadSurveyResultRepositorySpy implements LoadSurveyResultRepository {
 
         async loadBySurveyId(_surveyId: string): Promise<SurveyResultModel> {
             return Promise.resolve(mockSurveyResultModel())
@@ -25,5 +25,5 @@ export const mockLoadSurveyResultRepository = (): LoadSurveyResultRepository => 
 
     }
 
-    return new LoadSurveyResultRepositoryStub()
+    return new LoadSurveyResultRepositorySpy()
 }

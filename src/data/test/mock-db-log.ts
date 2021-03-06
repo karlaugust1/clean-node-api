@@ -1,7 +1,7 @@
 import { LogErrorRepository } from "../protocols/db/log/log-error-repository"
 
-export const mockLogErrorRepositoryStub = (): LogErrorRepository => {
-    class LogErrorRepositoryStub implements LogErrorRepository {
+export const mockLogErrorRepositorySpy = (): LogErrorRepository => {
+    class LogErrorRepositorySpy implements LogErrorRepository {
 
         // eslint-disable-next-line no-unused-vars
         async logError(_stack: string): Promise<void> {
@@ -10,5 +10,5 @@ export const mockLogErrorRepositoryStub = (): LogErrorRepository => {
 
     }
 
-    return new LogErrorRepositoryStub()
+    return new LogErrorRepositorySpy()
 }

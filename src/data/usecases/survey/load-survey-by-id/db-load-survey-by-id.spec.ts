@@ -6,16 +6,16 @@ import { mockLoadSurveyByIdRepository } from "../../../../data/test/"
 
 type SutTypes = {
     sut: DbLoadSurveyById
-    loadSurveyByIdRepositoryStub: LoadSurveyByIdRepository
+    loadSurveyByIdRepositorySpy: LoadSurveyByIdRepository
 }
 
 const makeSut = (): SutTypes => {
-    const loadSurveyByIdRepositoryStub = mockLoadSurveyByIdRepository()
-    const sut = new DbLoadSurveyById(loadSurveyByIdRepositoryStub)
+    const loadSurveyByIdRepositorySpy = mockLoadSurveyByIdRepository()
+    const sut = new DbLoadSurveyById(loadSurveyByIdRepositorySpy)
 
     return {
         sut,
-        loadSurveyByIdRepositoryStub
+        loadSurveyByIdRepositorySpy
     }
 }
 
@@ -28,8 +28,8 @@ describe("DbLoadSurveyById", () => {
     })
 
     test("Should call LoadSurveyByIdRepository", async () => {
-        const { sut, loadSurveyByIdRepositoryStub } = makeSut()
-        const loadByIdSpy = jest.spyOn(loadSurveyByIdRepositoryStub, "loadById")
+        const { sut, loadSurveyByIdRepositorySpy } = makeSut()
+        const loadByIdSpy = jest.spyOn(loadSurveyByIdRepositorySpy, "loadById")
         await sut.loadById("any_id")
         expect(loadByIdSpy).toHaveBeenCalledWith("any_id")
     })
@@ -41,9 +41,9 @@ describe("DbLoadSurveyById", () => {
     })
 
     test("Should throw if LoadSurveyByIdRepository throws", async () => {
-        const { sut, loadSurveyByIdRepositoryStub } = makeSut()
+        const { sut, loadSurveyByIdRepositorySpy } = makeSut()
         // eslint-disable-next-line max-len
-        jest.spyOn(loadSurveyByIdRepositoryStub, "loadById").mockImplementationOnce(() => throwError())
+        jest.spyOn(loadSurveyByIdRepositorySpy, "loadById").mockImplementationOnce(() => throwError())
         const promise = sut.loadById("any_id")
         await expect(promise).rejects.toThrow()
     })

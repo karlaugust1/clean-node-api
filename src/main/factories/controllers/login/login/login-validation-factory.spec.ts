@@ -8,7 +8,7 @@ import { Validation } from "../../../../../presentations/protocols"
 jest.mock("../../../../../validation/validators/validation-composite")
 
 const makeEmailValidator = (): EmailValidator => {
-    class EmailValidatorStub implements EmailValidator {
+    class EmailValidatorSpy implements EmailValidator {
 
         // eslint-disable-next-line no-unused-vars
         isValid(_email: string): boolean {
@@ -17,7 +17,7 @@ const makeEmailValidator = (): EmailValidator => {
 
     }
 
-    return new EmailValidatorStub()
+    return new EmailValidatorSpy()
 }
 
 describe("LoginValidation Factory", () => {

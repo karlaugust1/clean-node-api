@@ -7,7 +7,7 @@ import { AddAccountParams } from "../../domain/usecases/account/add-account"
 import { mockAccountModel } from "../../domain/test"
 
 export const mockAddAccountRepository = (): AddAccountRepository => {
-    class AddAccountRepositoryStub implements AddAccountRepository {
+    class AddAccountRepositorySpy implements AddAccountRepository {
 
         // eslint-disable-next-line no-unused-vars
         async add(_accountData: AddAccountParams): Promise<AccountModel> {
@@ -16,11 +16,11 @@ export const mockAddAccountRepository = (): AddAccountRepository => {
 
     }
 
-    return new AddAccountRepositoryStub()
+    return new AddAccountRepositorySpy()
 }
 
 export const mockLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
-    class LoadAccountByEmailRepositoryStub implements LoadAccountByEmailRepository {
+    class LoadAccountByEmailRepositorySpy implements LoadAccountByEmailRepository {
 
         // eslint-disable-next-line no-unused-vars
         async loadByEmail(_email: string): Promise<AccountModel> {
@@ -31,11 +31,11 @@ export const mockLoadAccountByEmailRepository = (): LoadAccountByEmailRepository
 
     }
 
-    return new LoadAccountByEmailRepositoryStub()
+    return new LoadAccountByEmailRepositorySpy()
 }
 
 export const mockLoadAccountByTokenRepository = (): LoadAccountByTokenRepository => {
-    class LoadAccountByTokenRepositoryStub implements LoadAccountByTokenRepository {
+    class LoadAccountByTokenRepositorySpy implements LoadAccountByTokenRepository {
 
         async loadByToken(_token: string, _role?: string): Promise<AccountModel> {
             return Promise.resolve(mockAccountModel())
@@ -43,11 +43,11 @@ export const mockLoadAccountByTokenRepository = (): LoadAccountByTokenRepository
 
     }
 
-    return new LoadAccountByTokenRepositoryStub()
+    return new LoadAccountByTokenRepositorySpy()
 }
 
 export const mockUpdateAccessTokenRepository = (): UpdateAccessTokenRepository => {
-    class UpdateAccessTokenRepositoryStub implements UpdateAccessTokenRepository {
+    class UpdateAccessTokenRepositorySpy implements UpdateAccessTokenRepository {
 
         // eslint-disable-next-line no-unused-vars
         async updateAccessToken(_id: string, _token: string): Promise<void> {
@@ -56,5 +56,5 @@ export const mockUpdateAccessTokenRepository = (): UpdateAccessTokenRepository =
 
     }
 
-    return new UpdateAccessTokenRepositoryStub()
+    return new UpdateAccessTokenRepositorySpy()
 }

@@ -7,19 +7,19 @@ import { mockLoadSurveyByIdRepository } from "../../../test"
 
 type SutTypes = {
     sut: DbLoadSurveyResult
-    loadSurveyResultRepositoryStub: LoadSurveyResultRepository
-    loadSurveyByIdRepositoryStub: LoadSurveyByIdRepository
+    loadSurveyResultRepositorySpy: LoadSurveyResultRepository
+    loadSurveyByIdRepositorySpy: LoadSurveyByIdRepository
 }
 
 const makeSut = (): SutTypes => {
-    const loadSurveyResultRepositoryStub = mockLoadSurveyResultRepository()
-    const loadSurveyByIdRepositoryStub = mockLoadSurveyByIdRepository()
-    const sut = new DbLoadSurveyResult(loadSurveyResultRepositoryStub, loadSurveyByIdRepositoryStub)
+    const loadSurveyResultRepositorySpy = mockLoadSurveyResultRepository()
+    const loadSurveyByIdRepositorySpy = mockLoadSurveyByIdRepository()
+    const sut = new DbLoadSurveyResult(loadSurveyResultRepositorySpy, loadSurveyByIdRepositorySpy)
 
     return {
         sut,
-        loadSurveyResultRepositoryStub,
-        loadSurveyByIdRepositoryStub
+        loadSurveyResultRepositorySpy,
+        loadSurveyByIdRepositorySpy
     }
 }
 
@@ -31,32 +31,32 @@ describe("DbLoadSurveyResult Usecase", () => {
         MockDate.reset()
     })
     test("Should call LoadSurveyResultRepository", async () => {
-        const { sut, loadSurveyResultRepositoryStub } = makeSut()
-        const loadBySurveyIdSpy = jest.spyOn(loadSurveyResultRepositoryStub, "loadBySurveyId")
+        const { sut, loadSurveyResultRepositorySpy } = makeSut()
+        const loadBySurveyIdSpy = jest.spyOn(loadSurveyResultRepositorySpy, "loadBySurveyId")
         await sut.load("any_survey_id")
         expect(loadBySurveyIdSpy).toHaveBeenCalledWith("any_survey_id")
     })
 
     test("Should throw if LoadSurveyResultRepository throws", async () => {
-        const { sut, loadSurveyResultRepositoryStub } = makeSut()
+        const { sut, loadSurveyResultRepositorySpy } = makeSut()
         // eslint-disable-next-line max-len
-        jest.spyOn(loadSurveyResultRepositoryStub, "loadBySurveyId").mockImplementationOnce(() => throwError())
+        jest.spyOn(loadSurveyResultRepositorySpy, "loadBySurveyId").mockImplementationOnce(() => throwError())
         const promise = sut.load("any_survey_id")
         await expect(promise).rejects.toThrow()
     })
 
     test("Should call LoadSurveyByIdRepository if LoadSurveyResultRepository returns null", async () => {
-        const { sut, loadSurveyResultRepositoryStub, loadSurveyByIdRepositoryStub } = makeSut()
-        const loadByIdSpy = jest.spyOn(loadSurveyByIdRepositoryStub, "loadById")
-        jest.spyOn(loadSurveyResultRepositoryStub, "loadBySurveyId").mockReturnValueOnce(Promise.resolve(null))
+        const { sut, loadSurveyResultRepositorySpy, loadSurveyByIdRepositorySpy } = makeSut()
+        const loadByIdSpy = jest.spyOn(loadSurveyByIdRepositorySpy, "loadById")
+        jest.spyOn(loadSurveyResultRepositorySpy, "loadBySurveyId").mockReturnValueOnce(Promise.resolve(null))
         await sut.load("any_survey_id")
         expect(loadByIdSpy).toHaveBeenCalledWith("any_survey_id")
     })
 
     // eslint-disable-next-line max-len
     test("Should return LoadSurveyByIdRepository with all answers with count 0 if LoadSurveyResultRepository returns null", async () => {
-        const { sut, loadSurveyResultRepositoryStub } = makeSut()
-        jest.spyOn(loadSurveyResultRepositoryStub, "loadBySurveyId").mockReturnValueOnce(Promise.resolve(null))
+        const { sut, loadSurveyResultRepositorySpy } = makeSut()
+        jest.spyOn(loadSurveyResultRepositorySpy, "loadBySurveyId").mockReturnValueOnce(Promise.resolve(null))
         const result = await sut.load("any_survey_id")
         expect(result).toEqual(mocEmptySurveyResultModel())
     })
