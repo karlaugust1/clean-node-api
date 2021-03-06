@@ -100,7 +100,7 @@ rules:
   computed-property-spacing: error
   array-bracket-spacing: error
   array-bracket-newline: [error, consistent]
-  no-unused-vars: 'warn'
+  no-unused-vars: 'off'
   require-atomic-updates: 'off'
   no-case-declarations: 'off'
 
