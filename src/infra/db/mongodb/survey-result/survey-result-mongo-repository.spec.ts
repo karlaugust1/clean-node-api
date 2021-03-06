@@ -108,17 +108,17 @@ describe("Survey Mongo Repository", () => {
                 accountId: new ObjectId(account.id),
                 answer: survey.answers[0].answer,
                 date: new Date()
-            },{
+            }, {
                 surveyId: new ObjectId(survey.id),
                 accountId: new ObjectId(account.id),
                 answer: survey.answers[0].answer,
                 date: new Date()
-            },{
+            }, {
                 surveyId: new ObjectId(survey.id),
                 accountId: new ObjectId(account.id),
                 answer: survey.answers[1].answer,
                 date: new Date()
-            },{
+            }, {
                 surveyId: new ObjectId(survey.id),
                 accountId: new ObjectId(account.id),
                 answer: survey.answers[1].answer,
@@ -134,6 +134,13 @@ describe("Survey Mongo Repository", () => {
             expect(saveResult.answers[1].percent).toBe(50)
             expect(saveResult.answers[2].count).toBe(0)
             expect(saveResult.answers[2].percent).toBe(0)
+        })
+
+        test("Should return null if there is no survey result", async () => {
+            const survey = await makeSurvey()
+            const sut = makeSut()
+            const surveyResult = await sut.loadBySurveyId(survey.id)
+            expect(surveyResult).toBeNull()
         })
     })
 })
