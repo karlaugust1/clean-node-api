@@ -2,7 +2,7 @@ import { LoadSurveyByIdRepository } from "./db-load-survey-by-id-protocols"
 import { DbLoadSurveyById } from "./db-load-survey-by-id"
 import MockDate from "mockdate"
 import { throwError, mockSurveyModel } from "../../../../domain/test/"
-import { mockLoadSurveyByIdRepositoryStub } from "../../../../data/test/"
+import { mockLoadSurveyByIdRepository } from "../../../../data/test/"
 
 type SutTypes = {
     sut: DbLoadSurveyById
@@ -10,7 +10,7 @@ type SutTypes = {
 }
 
 const makeSut = (): SutTypes => {
-    const loadSurveyByIdRepositoryStub = mockLoadSurveyByIdRepositoryStub()
+    const loadSurveyByIdRepositoryStub = mockLoadSurveyByIdRepository()
     const sut = new DbLoadSurveyById(loadSurveyByIdRepositoryStub)
 
     return {

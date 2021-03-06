@@ -17,7 +17,7 @@ export const mockAddSurveyRepository = (): AddSurveyRepository => {
     return new AddSurveyRepositoryStub()
 }
 
-export const mockLoadSurveyByIdRepositoryStub = (): LoadSurveyByIdRepository => {
+export const mockLoadSurveyByIdRepository = (): LoadSurveyByIdRepository => {
     class LoadSurveyByIdRepositoryStub implements LoadSurveyByIdRepository {
 
         // eslint-disable-next-line no-unused-vars
