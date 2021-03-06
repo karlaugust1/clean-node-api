@@ -16,12 +16,12 @@ export class LoginController implements Controller {
             }
             const { email, password } = httpRequest.body
             // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-            const authenticationModel = await this.authentication.auth({ email, password })
-            if (!authenticationModel) {
+            const accessToken = await this.authentication.auth({ email, password })
+            if (!accessToken) {
                 return unauthorizedError()
             }
 
-            return ok(authenticationModel)
+            return ok({ accessToken })
         } catch (error) {
             return serverError(error)
         }
