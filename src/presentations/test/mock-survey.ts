@@ -32,7 +32,7 @@ export const mockLoadSurveyById = (): LoadSurveyById => {
 export const mockLoadSurveysSpy = (): LoadSurveys => {
     class LoadSurveysSpy implements LoadSurveys {
 
-        async load(): Promise<SurveyModel[]> {
+        async load(_accountId: string): Promise<SurveyModel[]> {
             return Promise.resolve(mockSurveysModel())
         }
 
