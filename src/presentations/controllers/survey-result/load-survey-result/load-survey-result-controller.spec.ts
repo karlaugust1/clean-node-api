@@ -1,4 +1,4 @@
-import { HttpRequest, LoadSurveyById, LoadSurveyResult } from "./load-survey-result-controller-protocols"
+import { LoadSurveyById, LoadSurveyResult } from "./load-survey-result-controller-protocols"
 import { LoadSurveyResultController } from "./load-survey-result-controller"
 import { mockLoadSurveyById, mockLoadSurveyResult } from "../../../../presentations/test"
 import { forbidden, ok, serverError } from "../../../helpers/http/http-helper"
@@ -6,11 +6,9 @@ import { InvalidParamError } from "../../../errors"
 import { mockSurveyResultModel, throwError } from "../../../../domain/test"
 import MockDate from "mockdate"
 
-const mockRequest = (): HttpRequest => ({
+const mockRequest = (): LoadSurveyResultController.Request => ({
     accountId: "any_id",
-    params: {
-        surveyId: "any_id"
-    }
+    surveyId: "any_id"
 })
 
 type SutTypes = {

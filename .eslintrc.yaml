@@ -129,6 +129,8 @@ rules:
   "@typescript-eslint/ban-types": 'off'
   "@typescript-eslint/no-unsafe-member-access": 'off'
   "@typescript-eslint/no-unsafe-assignment": 'off'
+  "@typescript-eslint/no-namespace": "off"
+  "import/export": "off"
 
   import/order: 'off'
   import/no-named-as-default: 'off'

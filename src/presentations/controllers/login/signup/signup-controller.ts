@@ -1,5 +1,5 @@
 import { badRequest, ok, serverError, forbidden } from "../../../helpers/http/http-helper"
-import { AddAccount, Controller, HttpRequest, HttpResponse, Authentication } from "./signup-controller-protocols"
+import { AddAccount, Controller, HttpResponse, Authentication } from "./signup-controller-protocols"
 import { Validation } from "../../../protocols/validation"
 import { EmailInUseError } from "../../../errors"
 export class SignUpController implements Controller {
@@ -10,13 +10,13 @@ export class SignUpController implements Controller {
         private readonly authentication: Authentication
     ) { }
 
-    async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
+    async handle(request: SignUpController.Request): Promise<HttpResponse> {
         try {
-            const error = this.validation.validate(httpRequest.body)
+            const error = this.validation.validate(request)
             if (error) {
                 return badRequest(error)
             }
-            const { name, email, password } = httpRequest.body
+            const { name, email, password } = request
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const account = await this.addAccount.add({
                 name,
@@ -34,6 +34,17 @@ export class SignUpController implements Controller {
         } catch (error) {
             return serverError(error)
         }
+    }
+
+}
+
+export namespace SignUpController {
+
+    export type Request = {
+        name: string
+        email: string
+        password: string
+        passwordConfirmation: string
     }
 
 }

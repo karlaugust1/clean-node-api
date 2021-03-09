@@ -1,19 +1,16 @@
-import { HttpRequest, AddSurvey, Validation } from "./add-survey-controller-protocols";
+import { AddSurvey, Validation } from "./add-survey-controller-protocols";
 import { AddSurveyController } from "./add-survey-controller"
 import { badRequest, serverError, noContent } from "../../../helpers/http/http-helper";
 import MockDate from "mockdate"
 import { throwError } from "../../../../domain/test/"
 import { mockValidation, mockAddSurvey } from "../../../test";
 
-const mockRequest = (): HttpRequest => ({
-    body: {
-        question: "any_question",
-        answers: [{
-            image: "any_image",
-            answer: "any_answer"
-        }],
-        date: new Date()
-    }
+const mockRequest = (): AddSurveyController.Request => ({
+    question: "any_question",
+    answers: [{
+        image: "any_image",
+        answer: "any_answer"
+    }]
 })
 
 type SutTypes = {
@@ -44,9 +41,9 @@ describe("AddSurvey Controller", () => {
     test("Shoul call Validation with correct values", async () => {
         const { sut, validationSpy } = makeSut()
         const validateSpy = jest.spyOn(validationSpy, "validate")
-        const httpRequest = mockRequest()
-        await sut.handle(httpRequest)
-        expect(validateSpy).toHaveBeenCalledWith(httpRequest.body)
+        const request = mockRequest()
+        await sut.handle(request)
+        expect(validateSpy).toHaveBeenCalledWith(request)
     })
 
     test("Shoul return 400 if Validation fails", async () => {
@@ -59,9 +56,9 @@ describe("AddSurvey Controller", () => {
     test("Shoul call AddSurvey with correct values", async () => {
         const { sut, addSurveySpy } = makeSut()
         const addSpy = jest.spyOn(addSurveySpy, "add")
-        const httpRequest = mockRequest()
-        await sut.handle(httpRequest)
-        expect(addSpy).toHaveBeenCalledWith(httpRequest.body)
+        const request = mockRequest()
+        await sut.handle(request)
+        expect(addSpy).toHaveBeenCalledWith({ ...request, date: new Date() })
     })
 
     test("Shoul return 500 if AddSurvey throws", async () => {

@@ -1,5 +1,5 @@
 import { LogControllerDecorator } from "./log-controller-decorator"
-import { Controller, HttpResponse, HttpRequest } from "../../presentations/protocols"
+import { Controller, HttpResponse } from "../../presentations/protocols"
 import { serverError, ok } from "../../presentations/helpers/http/http-helper"
 import { LogErrorRepository } from "../../data/protocols/db/log/log-error-repository"
 import { mockAccountModel } from "../../domain/test"
@@ -11,7 +11,7 @@ type SutTypes = {
     logErrorRepositorySpy: LogErrorRepository
 }
 
-const makeHttpRequest = (): HttpRequest => ({
+const makeRequest = (): unknown => ({
     body: {
         name: "valid_name",
         email: "valid_email@mail.com",
@@ -31,7 +31,7 @@ const makeController = (): Controller => {
     class ControllerSpy implements Controller {
 
         // eslint-disable-next-line no-unused-vars
-        async handle(_httpRequest: HttpRequest): Promise<HttpResponse> {
+        async handle(_request: unknown): Promise<HttpResponse> {
             return Promise.resolve(ok(mockAccountModel()))
         }
 
@@ -56,13 +56,13 @@ describe("LogController Decorator", () => {
     test("Should call controller handle", async () => {
         const { sut, controllerSpy } = makeSut()
         const handleSpy = jest.spyOn(controllerSpy, "handle")
-        await sut.handle(makeHttpRequest())
-        expect(handleSpy).toHaveBeenCalledWith(makeHttpRequest())
+        await sut.handle(makeRequest())
+        expect(handleSpy).toHaveBeenCalledWith(makeRequest())
     })
 
     test("Should return the same result of the controller", async () => {
         const { sut } = makeSut()
-        const httpResponse = await sut.handle(makeHttpRequest())
+        const httpResponse = await sut.handle(makeRequest())
         expect(httpResponse).toEqual(ok(mockAccountModel()))
     })
 
@@ -72,7 +72,7 @@ describe("LogController Decorator", () => {
         jest.spyOn(controllerSpy, "handle").mockReturnValueOnce(
             Promise.resolve(mockServerError())
         )
-        await sut.handle(makeHttpRequest())
+        await sut.handle(makeRequest())
         expect(logSpy).toHaveBeenCalledWith("any_stack")
     })
 })

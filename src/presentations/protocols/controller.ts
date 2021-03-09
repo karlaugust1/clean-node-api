@@ -1,6 +1,6 @@
-// eslint-disable-next-line semi
-import { HttpRequest, HttpResponse } from "./http";
+/* eslint-disable */
+import { HttpResponse } from "./http"
 
-export interface Controller {
-    handle(httpRequest: HttpRequest): Promise<HttpResponse>
+export interface Controller<T = any> {
+    handle(request: T): Promise<HttpResponse>
 }

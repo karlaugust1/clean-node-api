@@ -3,7 +3,7 @@ import { MissingParamError, ServerError, EmailInUseError } from "../../../errors
 import { SignUpController } from "./signup-controller"
 import { AddAccount, Authentication } from "./signup-controller-protocols"
 import { ok, badRequest, serverError, forbidden } from "../../../helpers/http/http-helper"
-import { HttpRequest, Validation } from "../../../protocols"
+import { Validation } from "../../../protocols"
 import { throwError } from "../../../../domain/test/"
 import { mockValidation, mockAuthentication, mockAddAccount } from "../../../test"
 
@@ -14,13 +14,13 @@ type SutTypes = {
     authenticationSpy: Authentication
 }
 
-const mockHttpRequest = (): HttpRequest => ({
-    body: {
-        name: "valid_name",
-        email: "valid_email@mail.com",
-        password: "valid_password",
-        passwordConfirmation: "valid_password"
-    }
+const mockHttpRequest = (): SignUpController.Request => ({
+
+    name: "valid_name",
+    email: "valid_email@mail.com",
+    password: "valid_password",
+    passwordConfirmation: "valid_password"
+
 })
 
 const makeSut = (): SutTypes => {
@@ -42,8 +42,8 @@ describe("SignUp Controller", () => {
         // SUT == System Under Test => Class that we are testing
         const { sut, addAccountSpy: addAccount } = makeSut()
         const addSpy = jest.spyOn(addAccount, "add")
-        const httpRequest = mockHttpRequest()
-        await sut.handle(httpRequest)
+        const request = mockHttpRequest()
+        await sut.handle(request)
         expect(addSpy).toHaveBeenCalledWith({
             name: "valid_name",
             email: "valid_email@mail.com",
@@ -79,9 +79,9 @@ describe("SignUp Controller", () => {
         // SUT == System Under Test => Class that we are testing
         const { sut, validationSpy } = makeSut()
         const validateSpy = jest.spyOn(validationSpy, "validate")
-        const httpRequest = mockHttpRequest()
-        await sut.handle(httpRequest)
-        expect(validateSpy).toHaveBeenCalledWith(httpRequest.body)
+        const request = mockHttpRequest()
+        await sut.handle(request)
+        expect(validateSpy).toHaveBeenCalledWith(request)
     })
 
     test("Should return 400 if validation returns an error", async () => {

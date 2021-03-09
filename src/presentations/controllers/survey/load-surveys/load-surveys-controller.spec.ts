@@ -1,11 +1,11 @@
-import { SurveyModel, LoadSurveys, HttpRequest } from "./load-surveys-controller-protocols"
+import { SurveyModel, LoadSurveys } from "./load-surveys-controller-protocols"
 import { LoadSurveysController } from "./load-surveys-controller"
 import MockDate from "mockdate"
 import { ok, serverError, noContent } from "../../../helpers/http/http-helper"
 import { throwError } from "../../../../domain/test/"
 import { mockLoadSurveysSpy } from "../../../test"
 
-const mockRequest = (): HttpRequest => ({
+const mockRequest = (): LoadSurveysController.Request => ({
     accountId: "any_id"
 })
 const mockSurveysModel = (): SurveyModel[] => [{

@@ -1,6 +1,6 @@
 import { SaveSurveyResultController } from "./save-survey-result-controller"
 import {
-    HttpRequest, LoadSurveyById, SaveSurveyResult
+    LoadSurveyById, SaveSurveyResult
 } from "./save-survey-result-controller-protocols"
 import { forbidden, serverError, ok } from "../../../helpers/http/http-helper"
 import { InvalidParamError } from "../../../errors"
@@ -8,13 +8,9 @@ import MockDate from "mockdate"
 import { throwError, mockSurveyResultModel } from "../../../../domain/test/"
 import { mockSaveSurveyResult, mockLoadSurveyById } from "../../../test"
 
-const mockRequest = (): HttpRequest => ({
-    params: {
-        surveyId: "any_survey_id"
-    },
-    body: {
-        answer: "any_answer"
-    },
+const mockRequest = (): SaveSurveyResultController.Request => ({
+    surveyId: "any_survey_id",
+    answer: "any_answer",
     accountId: "any_account_id"
 })
 
@@ -59,18 +55,18 @@ describe("SaveSurveyResult Controller", () => {
         const { sut, loadSurveyByIdSpy } = makeSut()
         // eslint-disable-next-line max-len
         jest.spyOn(loadSurveyByIdSpy, "loadById").mockImplementationOnce(() => throwError())
-        const httpResponse = await sut.handle({})
+        const httpResponse = await sut.handle(mockRequest())
         expect(httpResponse).toEqual(serverError(new Error()))
     })
     test("Should return 403 if an invalid answer is provided", async () => {
         const { sut } = makeSut()
+        const request = mockRequest()
+        request.answer = "invalid_answer"
         const httpResponse = await sut.handle({
-            params: {
-                surveyId: "any_survey_id"
-            },
-            body: {
-                asnwer: "invalid_answer"
-            }
+            surveyId: "any_survey_id",
+            answer: "invalid_answer",
+            accountId: "any_account_id"
+
         })
         expect(httpResponse).toEqual(forbidden(new InvalidParamError("answer")))
     })
@@ -89,7 +85,7 @@ describe("SaveSurveyResult Controller", () => {
         const { sut, saveSurveyResultSpy } = makeSut()
         // eslint-disable-next-line max-len
         jest.spyOn(saveSurveyResultSpy, "save").mockImplementationOnce(() => throwError())
-        const httpResponse = await sut.handle({})
+        const httpResponse = await sut.handle(mockRequest())
         expect(httpResponse).toEqual(serverError(new Error()))
     })
     test("Shoul return 200 on success", async () => {
