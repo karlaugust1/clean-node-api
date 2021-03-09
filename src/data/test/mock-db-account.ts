@@ -3,14 +3,13 @@ import { LoadAccountByEmailRepository } from "../protocols/db/account/load-accou
 import { LoadAccountByTokenRepository } from "../protocols/db/account/load-account-by-token-repository"
 import { UpdateAccessTokenRepository } from "../protocols/db/account/update-access-token-repository"
 import { AccountModel } from "../../domain/models/account"
-import { AddAccountParams } from "../../domain/usecases/account/add-account"
 import { mockAccountModel } from "../../domain/test"
 
 export const mockAddAccountRepository = (): AddAccountRepository => {
     class AddAccountRepositorySpy implements AddAccountRepository {
 
         // eslint-disable-next-line no-unused-vars
-        async add(_accountData: AddAccountParams): Promise<AccountModel> {
+        async add(_accountData: AddAccountRepository.Params): Promise<AddAccountRepository.Result> {
             return Promise.resolve(mockAccountModel())
         }
 

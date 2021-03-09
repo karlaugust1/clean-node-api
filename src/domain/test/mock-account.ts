@@ -1,9 +1,9 @@
 /* eslint-disable max-len */
 import { AccountModel } from "../models/account"
-import { AddAccountParams } from "../usecases/account/add-account"
+import { AddAccount } from "../usecases/account/add-account"
 import { AuthenticationParams } from "../usecases/account/authentication"
 
-export const mockAddAccountParams = (): AddAccountParams => ({
+export const mockAddAccountParams = (): AddAccount.Params => ({
     name: "any_name",
     email: "any_email@mail.com",
     password: "any_password"

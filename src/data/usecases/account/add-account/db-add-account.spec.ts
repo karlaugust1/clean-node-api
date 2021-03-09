@@ -63,11 +63,11 @@ describe("DbAddAccount UseCase", () => {
         await expect(promise).rejects.toThrow()
     })
 
-    test("Should return an account on success", async () => {
+    test("Should return true on success", async () => {
         const { sut } = makeSut()
 
         const account = await sut.add(mockAddAccountParams())
-        expect(account).toEqual(mockAccountModel())
+        expect(account).toBe(true)
     })
 
     test("Should call LoadAccountByEmailRepository with correct email", async () => {
@@ -82,6 +82,6 @@ describe("DbAddAccount UseCase", () => {
         // eslint-disable-next-line max-len
         jest.spyOn(loadAccountByEmailRepositorySpy, "loadByEmail").mockReturnValueOnce(Promise.resolve(mockAccountModel()))
         const account = await sut.add(mockAddAccountParams())
-        expect(account).toBeNull()
+        expect(account).toBe(false)
     })
 })

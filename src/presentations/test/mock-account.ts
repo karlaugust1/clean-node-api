@@ -1,4 +1,4 @@
-import { AddAccount, AddAccountParams } from "../../domain/usecases/account/add-account"
+import { AddAccount } from "../../domain/usecases/account/add-account"
 import { mockAccountModel } from "../../domain/test"
 import { AccountModel } from "../../domain/models/account"
 import { Authentication, AuthenticationParams } from "../../domain/usecases/account/authentication"
@@ -8,7 +8,7 @@ export const mockAddAccount = (): AddAccount => {
     class AddAccountSpy implements AddAccount {
 
         // eslint-disable-next-line no-unused-vars
-        async add(_account: AddAccountParams): Promise<AccountModel> {
+        async add(_account: AddAccount.Params): Promise<AccountModel> {
             return Promise.resolve(mockAccountModel())
         }
 

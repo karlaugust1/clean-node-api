@@ -1,5 +1,4 @@
 import { AddAccountRepository } from "../../../../data/protocols/db/account/add-account-repository";
-import { AddAccountParams } from "../../../../domain/usecases/account/add-account";
 import { AccountModel } from "../../../../domain/models/account";
 import { MongoHelper } from "../helpers/mongo-helper";
 import { LoadAccountByEmailRepository } from "../../../../data/protocols/db/account/load-account-by-email-repository";
@@ -8,7 +7,7 @@ import { LoadAccountByToken } from "../../../../domain/usecases/account/load-acc
 // eslint-disable-next-line max-len
 export class AccountMongoRepository implements AddAccountRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository, LoadAccountByToken {
 
-    async add(accountData: AddAccountParams): Promise<AccountModel> {
+    async add(accountData: AddAccountRepository.Params): Promise<AddAccountRepository.Params> {
         const accounCollection = await MongoHelper.getCollection("accounts")
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         const result = await accounCollection.insertOne(accountData)
