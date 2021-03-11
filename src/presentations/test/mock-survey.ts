@@ -1,14 +1,14 @@
 import { LoadSurveyById } from "../../domain/usecases/survey/load-surveys-by-id"
 import { SurveyModel } from "../../domain/models/survey"
 import { mockSurveyModel, mockSurveysModel } from "../../domain/test"
-import { AddSurvey, AddSurveyParams } from "../../domain/usecases/survey/add-survey"
+import { AddSurvey } from "../../domain/usecases/survey/add-survey"
 import { LoadSurveys } from "../../domain/usecases/survey/load-surveys"
 
 export const mockAddSurvey = (): AddSurvey => {
     class AddSurveySpy implements AddSurvey {
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        async add(_data: AddSurveyParams): Promise<void> {
+        async add(_data: AddSurvey.Params): Promise<void> {
             return Promise.resolve()
         }
 
