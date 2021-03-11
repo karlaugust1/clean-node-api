@@ -3,11 +3,11 @@ import { AccountModel } from "../../../../domain/models/account";
 import { MongoHelper } from "../helpers/mongo-helper";
 import { LoadAccountByEmailRepository } from "../../../../data/protocols/db/account/load-account-by-email-repository";
 import { UpdateAccessTokenRepository } from "../../../../data/protocols/db/account/update-access-token-repository";
-import { LoadAccountByToken } from "../../../../domain/usecases/account/load-account-by-token";
+import { LoadAccountByTokenRepository } from "../../../../data/protocols/db/account/load-account-by-token-repository";
 // eslint-disable-next-line max-len
-export class AccountMongoRepository implements AddAccountRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository, LoadAccountByToken {
+export class AccountMongoRepository implements AddAccountRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository, LoadAccountByTokenRepository {
 
-    async add(accountData: AddAccountRepository.Params): Promise<AddAccountRepository.Params> {
+    async add(accountData: AddAccountRepository.Params): Promise<AddAccountRepository.Result> {
         const accounCollection = await MongoHelper.getCollection("accounts")
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         const result = await accounCollection.insertOne(accountData)
@@ -31,7 +31,7 @@ export class AccountMongoRepository implements AddAccountRepository, LoadAccount
         })
     }
 
-    async loadByToken(accessToken: string, role?: string): Promise<AccountModel> {
+    async loadByToken(accessToken: string, role?: string): Promise<LoadAccountByTokenRepository.Result> {
         const accounCollection = await MongoHelper.getCollection("accounts")
         const account = await accounCollection.findOne({
             accessToken,
@@ -40,9 +40,13 @@ export class AccountMongoRepository implements AddAccountRepository, LoadAccount
             }, {
                 role: "admin"
             }]
+        }, {
+            projection: {
+                _id: 1
+            }
         })
 
-        return account && MongoHelper.map(account) as AccountModel
+        return account && MongoHelper.map(account) as LoadAccountByTokenRepository.Result
     }
 
 }
