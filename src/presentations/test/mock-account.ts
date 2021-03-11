@@ -1,15 +1,15 @@
 import { AddAccount } from "../../domain/usecases/account/add-account"
 import { mockAccountModel } from "../../domain/test"
 import { AccountModel } from "../../domain/models/account"
-import { Authentication, AuthenticationParams } from "../../domain/usecases/account/authentication"
+import { Authentication } from "../../domain/usecases/account/authentication"
 import { LoadAccountByToken } from "../middlewares/auth-middleware-protocols"
 
 export const mockAddAccount = (): AddAccount => {
     class AddAccountSpy implements AddAccount {
 
         // eslint-disable-next-line no-unused-vars
-        async add(_account: AddAccount.Params): Promise<AccountModel> {
-            return Promise.resolve(mockAccountModel())
+        async add(_account: AddAccount.Params): Promise<boolean> {
+            return Promise.resolve(true)
         }
 
     }
@@ -21,8 +21,8 @@ export const mockAuthentication = (): Authentication => {
     class AuthenticationSpy implements Authentication {
 
         // eslint-disable-next-line no-unused-vars
-        async auth(_authentication: AuthenticationParams): Promise<string> {
-            return Promise.resolve("any_token")
+        async auth(_authentication: Authentication.Params): Promise<Authentication.Result> {
+            return Promise.resolve({ accessToken: "any_token", name: "any_name" })
         }
 
     }

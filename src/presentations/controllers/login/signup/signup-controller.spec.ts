@@ -64,7 +64,7 @@ describe("SignUp Controller", () => {
         // SUT == System Under Test => Class that we are testing
         const { sut } = makeSut()
         const httpResponse = await sut.handle(mockHttpRequest())
-        expect(httpResponse).toEqual(ok({ accessToken: "any_token" }))
+        expect(httpResponse).toEqual(ok({ accessToken: "any_token", name: "any_name" }))
     })
 
     test("Should return 403 if a AddAccount returns null", async () => {
