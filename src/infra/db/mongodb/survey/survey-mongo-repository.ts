@@ -4,8 +4,9 @@ import { LoadSurveysRepository } from "../../../../data/protocols/db/survey/load
 import { SurveyModel } from "../../../../domain/models/survey";
 import { LoadSurveyByIdRepository } from "../../../../data/protocols/db/survey/load-survey-by-id-repository";
 import { ObjectId } from "mongodb";
+import { LoadAnswersBySurveyRepository } from "../../../../data/protocols/db/survey/load-answers-by-survey-repository";
 // eslint-disable-next-line max-len
-export class SurveyMongoRepository implements AddSurveyRepository, LoadSurveysRepository, LoadSurveyByIdRepository {
+export class SurveyMongoRepository implements AddSurveyRepository, LoadSurveysRepository, LoadSurveyByIdRepository, LoadAnswersBySurveyRepository {
 
     async add(surveyData: AddSurveyRepository.Params): Promise<void> {
         const surveyCollection = await MongoHelper.getCollection("surveys")
@@ -55,6 +56,22 @@ export class SurveyMongoRepository implements AddSurveyRepository, LoadSurveysRe
         const survey = await surveyCollection.findOne({ _id: new ObjectId(id) })
 
         return survey && MongoHelper.map(survey) as LoadSurveyByIdRepository.Result
+    }
+
+    async loadAnswers(id: string): Promise<LoadAnswersBySurveyRepository.Result> {
+        const surveyCollection = await MongoHelper.getCollection("surveys")
+        const query = new QueryBuilder()
+            .match({
+                _id: new ObjectId(id)
+            })
+            .project({
+                _id: 0,
+                answers: "$answers.answer"
+            })
+            .build()
+        const surveys = await surveyCollection.aggregate(query).toArray()
+
+        return surveys[0]?.answers as LoadAnswersBySurveyRepository.Result || []
     }
 
 }

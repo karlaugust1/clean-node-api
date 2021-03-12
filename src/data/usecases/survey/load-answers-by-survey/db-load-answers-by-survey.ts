@@ -1,15 +1,13 @@
-import { LoadAnswersBySurvey, LoadSurveyByIdRepository } from "./db-load-answers-by-survey-protocols";
+import { LoadAnswersBySurvey, LoadAnswersBySurveyRepository } from "./db-load-answers-by-survey-protocols";
 
 export class DbLoadAnswersBySurvey implements LoadAnswersBySurvey {
 
     constructor(
-        private readonly loadSurveyByIdRepository: LoadSurveyByIdRepository
+        private readonly loadSurveyByIdRepository: LoadAnswersBySurveyRepository
     ) { }
 
     async loadAnswers(id: string): Promise<LoadAnswersBySurvey.Result> {
-        const survey = await this.loadSurveyByIdRepository.loadById(id)
-
-        return survey?.answers.map(a => a.answer) || []
+        return this.loadSurveyByIdRepository.loadAnswers(id)
     }
 
 }
