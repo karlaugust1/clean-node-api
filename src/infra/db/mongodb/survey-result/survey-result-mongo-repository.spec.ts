@@ -2,7 +2,6 @@ import { MongoHelper } from "../helpers/mongo-helper"
 import { SurveyResultMongoRepository } from "./survey-result-mongo-repository"
 import { Collection, ObjectId } from "mongodb"
 import { SurveyModel } from "../../../../domain/models/survey"
-import { AccountModel } from "../../../../domain/models/account"
 
 let surveyCollection: Collection
 let surveyResultCollection: Collection
@@ -27,14 +26,14 @@ const makeSurvey = async (): Promise<SurveyModel> => {
     return MongoHelper.map(res.ops[0]) as SurveyModel
 }
 
-const makeAccount = async (): Promise<AccountModel> => {
+const mockAccountId = async (): Promise<string> => {
     const res = await accountCollection.insertOne({
         name: "any_name",
         email: "any_mail@mail.com",
         password: "any_password"
     })
 
-    return MongoHelper.map(res.ops[0]) as AccountModel
+    return res.ops[0]._id as string
 }
 
 describe("Survey Mongo Repository", () => {
@@ -59,38 +58,38 @@ describe("Survey Mongo Repository", () => {
         test("Should return add a survey result if its new", async () => {
             const sut = makeSut()
             const survey = await makeSurvey()
-            const account = await makeAccount()
+            const accountId = await mockAccountId()
             await sut.save({
                 surveyId: survey.id,
-                accountId: account.id,
+                accountId,
                 answer: survey.answers[0].answer,
                 date: new Date()
             })
             const surveyResult = await surveyResultCollection.findOne({
                 surveyId: survey.id,
-                accountId: account.id
+                accountId
             })
             expect(surveyResult).toBeTruthy()
         })
         test("Should update a survey result if it is not new", async () => {
             const sut = makeSut()
             const survey = await makeSurvey()
-            const account = await makeAccount()
+            const accountId = await mockAccountId()
             await surveyResultCollection.insertOne({
                 surveyId: new ObjectId(survey.id),
-                accountId: new ObjectId(account.id),
+                accountId: new ObjectId(accountId),
                 answer: survey.answers[0].answer,
                 date: new Date()
             })
             await sut.save({
                 surveyId: survey.id,
-                accountId: account.id,
+                accountId,
                 answer: survey.answers[1].answer,
                 date: new Date()
             })
             const surveyResult = await surveyResultCollection.find({
                 surveyId: survey.id,
-                accountId: account.id
+                accountId
             }).toArray()
 
             expect(surveyResult).toBeTruthy()
@@ -102,31 +101,31 @@ describe("Survey Mongo Repository", () => {
         test("Should load survey result", async () => {
             const sut = makeSut()
             const survey = await makeSurvey()
-            const account = await makeAccount()
-            const account2 = await makeAccount()
+            const accountId = await mockAccountId()
+            const accountId2 = await mockAccountId()
             await surveyResultCollection.insertMany([{
                 surveyId: new ObjectId(survey.id),
-                accountId: new ObjectId(account.id),
+                accountId: new ObjectId(accountId),
                 answer: survey.answers[0].answer,
                 date: new Date()
             }, {
                 surveyId: new ObjectId(survey.id),
-                accountId: new ObjectId(account2.id),
+                accountId: new ObjectId(accountId2),
                 answer: survey.answers[0].answer,
                 date: new Date()
             }, {
                 surveyId: new ObjectId(survey.id),
-                accountId: new ObjectId(account2.id),
+                accountId: new ObjectId(accountId2),
                 answer: survey.answers[1].answer,
                 date: new Date()
             }, {
                 surveyId: new ObjectId(survey.id),
-                accountId: new ObjectId(account2.id),
+                accountId: new ObjectId(accountId2),
                 answer: survey.answers[1].answer,
                 date: new Date()
             }])
 
-            const saveResult = await sut.loadBySurveyId(survey.id, account.id)
+            const saveResult = await sut.loadBySurveyId(survey.id, accountId)
             expect(saveResult).toBeTruthy()
             expect(saveResult.surveyId).toEqual(survey.id)
             expect(saveResult.answers[0].count).toBe(2)
@@ -142,27 +141,27 @@ describe("Survey Mongo Repository", () => {
         test("Should load survey result 2", async () => {
             const sut = makeSut()
             const survey = await makeSurvey()
-            const account = await makeAccount()
-            const account2 = await makeAccount()
-            const account3 = await makeAccount()
+            const accountId = await mockAccountId()
+            const accountId2 = await mockAccountId()
+            const accountId3 = await mockAccountId()
             await surveyResultCollection.insertMany([{
                 surveyId: new ObjectId(survey.id),
-                accountId: new ObjectId(account.id),
+                accountId: new ObjectId(accountId),
                 answer: survey.answers[0].answer,
                 date: new Date()
             }, {
                 surveyId: new ObjectId(survey.id),
-                accountId: new ObjectId(account2.id),
+                accountId: new ObjectId(accountId2),
                 answer: survey.answers[1].answer,
                 date: new Date()
             }, {
                 surveyId: new ObjectId(survey.id),
-                accountId: new ObjectId(account3.id),
+                accountId: new ObjectId(accountId3),
                 answer: survey.answers[1].answer,
                 date: new Date()
             }])
 
-            const saveResult = await sut.loadBySurveyId(survey.id, account2.id)
+            const saveResult = await sut.loadBySurveyId(survey.id, accountId2)
             expect(saveResult).toBeTruthy()
             expect(saveResult.surveyId).toEqual(survey.id)
             expect(saveResult.answers[0].count).toBe(2)
@@ -176,22 +175,22 @@ describe("Survey Mongo Repository", () => {
         test("Should load survey result 3", async () => {
             const sut = makeSut()
             const survey = await makeSurvey()
-            const account = await makeAccount()
-            const account2 = await makeAccount()
-            const account3 = await makeAccount()
+            const account = await mockAccountId()
+            const account2 = await mockAccountId()
+            const account3 = await mockAccountId()
             await surveyResultCollection.insertMany([{
                 surveyId: new ObjectId(survey.id),
-                accountId: new ObjectId(account.id),
+                accountId: new ObjectId(account),
                 answer: survey.answers[0].answer,
                 date: new Date()
             }, {
                 surveyId: new ObjectId(survey.id),
-                accountId: new ObjectId(account2.id),
+                accountId: new ObjectId(account2),
                 answer: survey.answers[1].answer,
                 date: new Date()
             }])
 
-            const saveResult = await sut.loadBySurveyId(survey.id, account3.id)
+            const saveResult = await sut.loadBySurveyId(survey.id, account3)
             expect(saveResult).toBeTruthy()
             expect(saveResult.surveyId).toEqual(survey.id)
             expect(saveResult.answers[0].count).toBe(1)
@@ -204,9 +203,9 @@ describe("Survey Mongo Repository", () => {
 
         test("Should return null if there is no survey result", async () => {
             const survey = await makeSurvey()
-            const account = await makeAccount()
+            const accountId = await mockAccountId()
             const sut = makeSut()
-            const surveyResult = await sut.loadBySurveyId(survey.id, account.id)
+            const surveyResult = await sut.loadBySurveyId(survey.id, accountId)
             expect(surveyResult).toBeNull()
         })
     })

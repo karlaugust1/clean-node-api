@@ -1,7 +1,6 @@
 import { MongoHelper } from "../helpers/mongo-helper"
 import { SurveyMongoRepository } from "./survey-mongo-repository"
 import { Collection } from "mongodb"
-import { AccountModel } from "../../../../domain/models/account"
 
 const makeSut = (): SurveyMongoRepository => new SurveyMongoRepository()
 
@@ -9,14 +8,14 @@ let surveyCollection: Collection
 let surveyResultCollection: Collection
 let accountCollection: Collection
 
-const makeAccount = async (): Promise<AccountModel> => {
+const makeAccountId = async (): Promise<string> => {
     const res = await accountCollection.insertOne({
         name: "any_name",
         email: "any_mail@mail.com",
         password: "any_password"
     })
 
-    return MongoHelper.map(res.ops[0]) as AccountModel
+    return res.ops[0]._id as string
 }
 
 describe("Survey Mongo Repository", () => {
@@ -56,7 +55,7 @@ describe("Survey Mongo Repository", () => {
     })
     describe("loadAll()", () => {
         test("Should load all surveys on success", async () => {
-            const account = await makeAccount()
+            const accountId = await makeAccountId()
             // INSERT QUESTIONS
             const result = await surveyCollection.insertMany([{
                 question: "any_question",
@@ -77,12 +76,12 @@ describe("Survey Mongo Repository", () => {
             // INSERT ANSWER
             await surveyResultCollection.insertOne({
                 surveyId: survey._id,
-                accountId: account.id,
+                accountId,
                 answer: survey.answers[0].answer,
                 date: new Date()
             })
             const sut = makeSut()
-            const surveys = await sut.loadAll(account.id)
+            const surveys = await sut.loadAll(accountId)
             expect(surveys.length).toBe(2)
             expect(surveys[0].id).toBeTruthy()
             expect(surveys[0].question).toEqual("any_question")
@@ -91,9 +90,9 @@ describe("Survey Mongo Repository", () => {
             expect(surveys[1].didAnswer).toBeFalsy()
         })
         test("Should load empty list", async () => {
-            const account = await makeAccount()
+            const accountId = await makeAccountId()
             const sut = makeSut()
-            const surveys = await sut.loadAll(account.id)
+            const surveys = await sut.loadAll(accountId)
             expect(surveys.length).toBe(0)
         })
     })
@@ -115,9 +114,9 @@ describe("Survey Mongo Repository", () => {
             expect(survey.id).toBeTruthy()
         })
         test("Should load empty list", async () => {
-            const account = await makeAccount()
+            const accountId = await makeAccountId()
             const sut = makeSut()
-            const surveys = await sut.loadAll(account.id)
+            const surveys = await sut.loadAll(accountId)
             expect(surveys.length).toBe(0)
         })
     })

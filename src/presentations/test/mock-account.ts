@@ -1,6 +1,5 @@
 import { AddAccount } from "../../domain/usecases/account/add-account"
 import { mockAccountModel } from "../../domain/test"
-import { AccountModel } from "../../domain/models/account"
 import { Authentication } from "../../domain/usecases/account/authentication"
 import { LoadAccountByToken } from "../middlewares/auth-middleware-protocols"
 
@@ -33,7 +32,7 @@ export const mockAuthentication = (): Authentication => {
 export const mockLoadAccountByToken = (): LoadAccountByToken => {
     class LoadAccountByTokenSpy implements LoadAccountByToken {
 
-        async loadByToken(_accessToken: string, _role?: string): Promise<AccountModel> {
+        async loadByToken(_accessToken: string, _role?: string): Promise<LoadAccountByToken.Result> {
             return Promise.resolve(mockAccountModel())
         }
 

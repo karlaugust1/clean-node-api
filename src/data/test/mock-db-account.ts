@@ -2,7 +2,6 @@ import { AddAccountRepository } from "../protocols/db/account/add-account-reposi
 import { LoadAccountByEmailRepository } from "../protocols/db/account/load-account-by-email-repository"
 import { LoadAccountByTokenRepository } from "../protocols/db/account/load-account-by-token-repository"
 import { UpdateAccessTokenRepository } from "../protocols/db/account/update-access-token-repository"
-import { AccountModel } from "../../domain/models/account"
 import { mockAccountModel } from "../../domain/test"
 
 export const mockAddAccountRepository = (): AddAccountRepository => {
@@ -10,7 +9,7 @@ export const mockAddAccountRepository = (): AddAccountRepository => {
 
         // eslint-disable-next-line no-unused-vars
         async add(_accountData: AddAccountRepository.Params): Promise<AddAccountRepository.Result> {
-            return Promise.resolve(mockAccountModel())
+            return Promise.resolve(true)
         }
 
     }
@@ -22,8 +21,9 @@ export const mockLoadAccountByEmailRepository = (): LoadAccountByEmailRepository
     class LoadAccountByEmailRepositorySpy implements LoadAccountByEmailRepository {
 
         // eslint-disable-next-line no-unused-vars
-        async loadByEmail(_email: string): Promise<AccountModel> {
-            const account: AccountModel = mockAccountModel()
+        async loadByEmail(_email: string): Promise<LoadAccountByEmailRepository.Result> {
+            const account = mockAccountModel()
+            delete account.email
 
             return Promise.resolve(account)
         }
