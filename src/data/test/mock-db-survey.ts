@@ -20,7 +20,7 @@ export const mockLoadSurveyByIdRepository = (): LoadSurveyByIdRepository => {
     class LoadSurveyByIdRepositorySpy implements LoadSurveyByIdRepository {
 
         // eslint-disable-next-line no-unused-vars
-        async loadById(_id: string): Promise<SurveyModel> {
+        async loadById(_id: string): Promise<LoadSurveyByIdRepository.Result> {
             return Promise.resolve(mockSurveyModel())
         }
 
