@@ -1,4 +1,6 @@
-import { LoadSurveyById } from "../../domain/usecases/survey/load-surveys-by-id"
+import {
+    LoadAnswersBySurvey
+} from "../../domain/usecases/survey/load-answers-by-survey"
 import { SurveyModel } from "../../domain/models/survey"
 import { mockSurveyModel, mockSurveysModel } from "../../domain/test"
 import { AddSurvey } from "../../domain/usecases/survey/add-survey"
@@ -17,16 +19,16 @@ export const mockAddSurvey = (): AddSurvey => {
     return new AddSurveySpy()
 }
 
-export const mockLoadSurveyById = (): LoadSurveyById => {
-    class LoadSurveyByIdSpy implements LoadSurveyById {
+export const mockLoadAnswersBySurvey = (): LoadAnswersBySurvey => {
+    class LoadAnswersBySurveySpy implements LoadAnswersBySurvey {
 
-        async loadById(_id: string): Promise<SurveyModel> {
-            return Promise.resolve(mockSurveyModel())
+        async loadAnswers(_id: string): Promise<LoadAnswersBySurvey.Result> {
+            return Promise.resolve(mockSurveyModel().answers.map(a => a.answer))
         }
 
     }
 
-    return new LoadSurveyByIdSpy()
+    return new LoadAnswersBySurveySpy()
 }
 
 export const mockLoadSurveysSpy = (): LoadSurveys => {

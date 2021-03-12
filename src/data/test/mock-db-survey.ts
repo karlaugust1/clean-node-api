@@ -3,6 +3,7 @@ import { LoadSurveyByIdRepository } from "../protocols/db/survey/load-survey-by-
 import { SurveyModel } from "../../domain/models/survey"
 import { mockSurveyModel, mockSurveysModel } from "../../domain/test/mock-survey"
 import { LoadSurveysRepository } from "../protocols/db/survey/load-surveys-repository"
+import { CheckSurveyByIdRepository } from "../protocols/db/survey/check-survey-by-id-repository"
 
 export const mockAddSurveyRepository = (): AddSurveyRepository => {
     class AddSurveyRepositorySpy implements AddSurveyRepository {
@@ -27,6 +28,19 @@ export const mockLoadSurveyByIdRepository = (): LoadSurveyByIdRepository => {
     }
 
     return new LoadSurveyByIdRepositorySpy()
+}
+
+export const mockCheckSurveyByIdRepository = (): CheckSurveyByIdRepository => {
+    class CheckSurveyByIdRepositorySpy implements CheckSurveyByIdRepository {
+
+        // eslint-disable-next-line no-unused-vars
+        async checkById(_id: string): Promise<CheckSurveyByIdRepository.Result> {
+            return Promise.resolve(true)
+        }
+
+    }
+
+    return new CheckSurveyByIdRepositorySpy()
 }
 
 export const mockLoadSurveysRepositorySpy = (): LoadSurveysRepository => {
