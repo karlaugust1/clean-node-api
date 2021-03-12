@@ -3,6 +3,7 @@ import { LoadAccountByEmailRepository } from "../protocols/db/account/load-accou
 import { LoadAccountByTokenRepository } from "../protocols/db/account/load-account-by-token-repository"
 import { UpdateAccessTokenRepository } from "../protocols/db/account/update-access-token-repository"
 import { mockAccountModel } from "../../domain/test"
+import { CheckAccountByEmailRepository } from "../protocols/db/account/check-account-by-email-repository"
 
 export const mockAddAccountRepository = (): AddAccountRepository => {
     class AddAccountRepositorySpy implements AddAccountRepository {
@@ -31,6 +32,19 @@ export const mockLoadAccountByEmailRepository = (): LoadAccountByEmailRepository
     }
 
     return new LoadAccountByEmailRepositorySpy()
+}
+
+export const mockCheckAccountByEmailRepository = (): CheckAccountByEmailRepository => {
+    class CheckAccountByEmailRepositorySpy implements CheckAccountByEmailRepository {
+
+        // eslint-disable-next-line no-unused-vars
+        async checkByEmail(_email: string): Promise<CheckAccountByEmailRepository.Result> {
+            return Promise.resolve(false)
+        }
+
+    }
+
+    return new CheckAccountByEmailRepositorySpy()
 }
 
 export const mockLoadAccountByTokenRepository = (): LoadAccountByTokenRepository => {
