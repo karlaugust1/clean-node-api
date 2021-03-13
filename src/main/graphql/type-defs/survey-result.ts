@@ -15,7 +15,7 @@ export default gql`
         answers: [Answer!]!
         date: DateTime!
     }
-
+    
     type Answer {
         image: String
         answer: String!
