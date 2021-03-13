@@ -9,10 +9,10 @@ import {
 /* eslint-disable */
 export default {
     Query: {
-        surveyResult: async (_parent: any, args: any) => adaptResolver(makeLoadSurveyResultController(), args)
+        surveyResult: async (_parent: any, args: any, context: any) => adaptResolver(makeLoadSurveyResultController(), args, context)
     },
 
     Mutation: {
-        saveSurveyResult: async (_parent: any, args: any) => adaptResolver(makeSaveSurveyResultController(), args)
+        saveSurveyResult: async (_parent: any, args: any,  context: any) => adaptResolver(makeSaveSurveyResultController(), args, context)
     }
 }
